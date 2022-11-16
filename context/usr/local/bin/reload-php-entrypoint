@@ -1,0 +1,14 @@
+#!/bin/sh
+
+mkdir -p /etc/entrypoint.d
+
+for feature in $USE_FEATURES
+do
+    [ -x "/etc/features.d/$feature" ] && "/etc/features.d/$feature"
+done
+
+/bin/run-parts --exit-on-error /etc/entrypoint.d
+
+cd "$(find . -maxdepth 1 -mindepth 1 \( -name html -o -name docroot -o -name web \) -print)" || true
+
+/usr/local/bin/docker-php-entrypoint "$@"

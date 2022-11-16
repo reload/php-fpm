@@ -1,0 +1,15 @@
+name: Lint
+on: pull_request
+
+jobs:
+  markdownlint:
+    name: markdown
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run markdownlint
+      uses: actionshub/markdownlint@main
+    - name: Run hadolint
+      uses: hadolint/hadolint-action@v3
+      with:
+        trusted-registries: docker.io,ghcr.io
