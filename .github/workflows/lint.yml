@@ -8,8 +8,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Run markdownlint
-      uses: actionshub/markdownlint@main
+      uses: actionshub/markdownlint@2.0.2
     - name: Run hadolint
-      uses: hadolint/hadolint-action@v3
+      uses: hadolint/hadolint-action@v3.0.0
       with:
         trusted-registries: docker.io,ghcr.io
+    - name: Run ShellCheck
+      uses: ludeeus/action-shellcheck@1.1.0
+      with:
+        scandir: ./context/etc/features.d ./context/usr/bin
