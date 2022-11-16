@@ -2,17 +2,27 @@ name: Lint
 on: pull_request
 
 jobs:
-  markdownlint:
+  markdown:
     name: markdown
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Run markdownlint
       uses: actionshub/markdownlint@2.0.2
+  dockerfile:
+    name: dockerfile
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
     - name: Run hadolint
       uses: hadolint/hadolint-action@v3.0.0
       with:
         trusted-registries: docker.io,ghcr.io
+  shell-scripts:
+    name: shell scripts
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
     - name: Run ShellCheck
       uses: ludeeus/action-shellcheck@1.1.0
       with:
