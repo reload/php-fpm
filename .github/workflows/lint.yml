@@ -13,3 +13,7 @@ jobs:
       uses: hadolint/hadolint-action@v3
       with:
         trusted-registries: docker.io,ghcr.io
+    - name: Run ShellCheck
+      uses: ludeeus/action-shellcheck@1.1.0
+      with:
+        scandir: ./context/etc/features.d ./context/usr/bin
