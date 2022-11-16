@@ -43,6 +43,8 @@ jobs:
         platforms: linux/amd64,linux/arm64
         build-args: "php${{ matrix.php }}"
         labels: |
+          org.opencontainers.image.title=PHP ${{ matrix.php }}
+          org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
           org.opencontainers.image.source=https://github.com/${{ github.repository }}
           org.opencontainers.image.version=${{ matrix.php }}-${{ github.sha }}
           org.opencontainers.image.revision=${{ github.sha }}
