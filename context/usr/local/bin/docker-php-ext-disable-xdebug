@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if test -f '/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini'; then
+        echo 'Disabling extension xdebug'
+        mv '/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini' '/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini-disabled'
+else
+        echo 'The extension xdebug has already been disabled'
+fi
