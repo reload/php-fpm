@@ -28,4 +28,4 @@ $(VERSIONS): ## Build Docker image for PHP version
 test: $(TESTS) ## Run tests for ghcr.io/reload/php-fpm version
 
 $(TESTS): $(subst test,php,$@)
-	dgoss run ghcr.io/reload/php-fpm:$(subst test,,$@)
+	dgoss run -e PHP_VERSION=$(subst test,,$@) ghcr.io/reload/php-fpm:$(subst test,,$@)

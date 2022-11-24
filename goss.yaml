@@ -15,3 +15,7 @@ command:
     exit-status: 0
   install-php-extensions:
     exit-status: 0
+  php --version:
+    exit-status: 0
+    stdout:
+      - PHP {{getEnv "PHP_VERSION"}}
