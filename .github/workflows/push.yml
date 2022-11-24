@@ -1,6 +1,7 @@
+---
+name: Docker build
 on: push
 
-name: Docker build
 jobs:
   php-versions:
     name: Lookup PHP versions
@@ -8,9 +9,9 @@ jobs:
     outputs:
       matrix: ${{ env.php_versions }}
     steps:
-    - uses: actions/checkout@v3
-    - name: Lookup PHP versions
-      run: echo "php_versions=$(make _versions)" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - name: Lookup PHP versions
+        run: echo "php_versions=$(make _versions)" >> $GITHUB_ENV
   build:
     name: PHP
     runs-on: ubuntu-latest
@@ -20,33 +21,35 @@ jobs:
       matrix:
         php: ${{ fromJSON(needs.php-versions.outputs.matrix) }}
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-    - name: Set up Docker Buildx
-      id: buildx
-      uses: docker/setup-buildx-action@master
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v2
-      if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ github.token }}
-    - name: Build PHP ${{ matrix.php }}
-      uses: docker/build-push-action@v3
-      with:
-        file: Dockerfile
-        builder: ${{ steps.buildx.outputs.name }}
-        push: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
-        context: .
-        platforms: linux/amd64,linux/arm64
-        build-args: "php${{ matrix.php }}"
-        labels: |
-          org.opencontainers.image.title=PHP ${{ matrix.php }}
-          org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
-          org.opencontainers.image.source=https://github.com/${{ github.repository }}
-          org.opencontainers.image.version=${{ matrix.php }}-${{ github.sha }}
-          org.opencontainers.image.revision=${{ github.sha }}
-        tags: |
-          ghcr.io/${{ github.repository }}:${{ matrix.php }}
+      - uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      - name: Build PHP ${{ matrix.php }}
+        uses: docker/build-push-action@v3
+        env:
+          COMPOSE_DOCKER_CLI_BUILD: 1
+          DOCKER_BUILDKIT: 1
+        with:
+          file: "Dockerfile-${{ matrix.php }}"
+          builder: ${{ steps.buildx.outputs.name }}
+          push: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+          context: .
+          platforms: linux/amd64,linux/arm64
+          labels: |
+            org.opencontainers.image.title=PHP ${{ matrix.php }}
+            org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ matrix.php }}-${{ github.sha }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ matrix.php }}
