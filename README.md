@@ -11,4 +11,4 @@ Work in progress.
 - [ ] Drupal specific configuration (I know how I want this done)
 - [ ] Blackfire integration
 - [ ] Xdebug integration
-- [ ] Run goss test on GitHub CI
+- [x] Run goss test on GitHub CI
