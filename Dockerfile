@@ -1,6 +1,6 @@
 ## Helper images
 FROM blackfire/blackfire:2@sha256:17066fd70dc5239540fe33b938aa594e2cff21990340bd0eeec323d52e30d6e4 AS blackfire
-FROM composer:2@sha256:3b90a326789f2d255b9b312c74a97925eed80151edf97a8d9e390d9a613e3906 AS composer
+FROM composer:2@sha256:f9efbd0606c1d1a2d020b6fb4da7a662827e9ad83f3133f5ac9ff27be7fb8d33 AS composer
 FROM mlocati/php-extension-installer:1@sha256:38d22534ae3298e3d36f715b728b017079bdf54d8f6db9661f24c3bfebc2b678 AS php-extension-installer
 
 ## Custom PHP image
