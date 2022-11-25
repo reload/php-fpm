@@ -3,7 +3,6 @@
 extends: default
 
 rules:
-  line-length:
-    level: warning
+  line-length: disable
   truthy:
     check-keys: false
