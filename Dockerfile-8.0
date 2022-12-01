@@ -1,5 +1,5 @@
 # syntax = edrevo/dockerfile-plus # -*- Dockerfile -*-
 
-FROM php:8.0-fpm-alpine@sha256:81724293e135221b0eb394b207a6b0315506018d54cab2d98de91b14af3e663d AS reload-php
+FROM php:8.1-fpm-alpine@sha256:88407bcb4821e7a9da273d9dad746e1f795e9a6480d9cba5ba502d7836e23718 AS reload-php
 
 INCLUDE+ Dockerfile
