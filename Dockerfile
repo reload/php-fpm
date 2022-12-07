@@ -1,7 +1,7 @@
 ## Helper images
 FROM blackfire/blackfire:2@sha256:17066fd70dc5239540fe33b938aa594e2cff21990340bd0eeec323d52e30d6e4 AS blackfire
 FROM composer:2@sha256:356d2db112a3e4c0fbcf4955668d3f64ee43f848baf4fd20f00cfcb6f98245ad AS composer
-FROM mlocati/php-extension-installer:1@sha256:d74d9120fd52521195f7182417e25ece84b34e4e6d518914ce6f105698ac4ba0 AS php-extension-installer
+FROM mlocati/php-extension-installer:1@sha256:94e21d8175d3a06a4332f79a2d3e6285007ce6e0661c559d4e6fcb74fdb97b9b AS php-extension-installer
 
 ## Custom PHP image
 # hadolint ignore=DL3006
