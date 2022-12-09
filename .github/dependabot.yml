@@ -8,6 +8,9 @@ updates:
       timezone: Europe/Copenhagen
     reviewers:
       - "reload/developers"
+    ignore:
+      - dependency-name: "php"
+        update-types: ["version-update:semver-minor"]
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
