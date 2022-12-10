@@ -2,6 +2,10 @@
 name: Docker build
 on: push
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   php-versions:
     name: Lookup PHP versions

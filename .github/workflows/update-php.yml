@@ -4,7 +4,10 @@ name: Update PHP Docker images
 on:
   workflow_dispatch:
   schedule:
-    - cron: "05 14 * * *"
+    - cron: "00 6 * * *"
+
+permissions:
+  contents: read
 
 jobs:
   php-update:
@@ -22,3 +25,4 @@ jobs:
           branch: update-php-docker-image-shas
           delete-branch: true
           title: Update PHP Docker image SHAs
+          token: ${{ secrets.PAT_TOKEN }}
