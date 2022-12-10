@@ -10,7 +10,7 @@ updates:
       - "reload/developers"
     ignore:
       - dependency-name: "php"
-      - dependency-name: "docker.io/library/php"
+      - dependency-name: "library/php"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
