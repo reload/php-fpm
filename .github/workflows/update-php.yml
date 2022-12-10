@@ -1,0 +1,22 @@
+---
+name: Update PHP Docker images
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * *"
+
+jobs:
+  php-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Run update script"
+        run: ./scripts/update.sh
+      - name: "Create pull request"
+        uses: peter-evans/create-pull-request@v4
+        with:
+          add-paths: Dockerfile
+          commit-message: Update PHP Docker image SHAs
+          branch: update-php-docker-image-shas
+          delete-branch: true
+          title: Update PHP Docker image SHAs

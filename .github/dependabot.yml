@@ -10,7 +10,7 @@ updates:
       - "reload/developers"
     ignore:
       - dependency-name: "php"
-        update-types: ["version-update:semver-minor"]
+      - dependency-name: "docker.io/library/php"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:

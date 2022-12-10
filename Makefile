@@ -2,7 +2,7 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 export DOCKER_BUILDKIT=1
 
 PLATFORMS=$(shell docker version --format '{{.Server.Os}}/{{.Server.Arch}}')
-VERSIONS=$(shell ls --ignore-backups | grep -E '^Dockerfile-' | sed 's/Dockerfile-/php/')
+VERSIONS=$(shell grep -Po 'FROM .*php:.*AS \Kphp.*' Dockerfile)
 TESTS=$(subst php,test,$(VERSIONS))
 
 .DEFAULT_GOAL := current
@@ -23,7 +23,7 @@ _platforms: ## Output platforms as JSON list
 	@echo $(PLATFORMS) | jq --compact-output --raw-input 'split(",") | map(select(. != ""))'
 
 $(VERSIONS): ## Build Docker image for PHP version
-	docker buildx build --platform=$(PLATFORMS) --file Dockerfile-$(subst php,,$@) --tag ghcr.io/reload/php-fpm:$(subst php,,$@) --load .
+	docker buildx build --platform=$(PLATFORMS) --build-arg php=$(subst php,,$@) --file Dockerfile --tag ghcr.io/reload/php-fpm:$(subst php,,$@) --load .
 
 test: $(TESTS) ## Run tests for ghcr.io/reload/php-fpm version
 

@@ -41,11 +41,12 @@ jobs:
           COMPOSE_DOCKER_CLI_BUILD: 1
           DOCKER_BUILDKIT: 1
         with:
-          file: "Dockerfile-${{ matrix.php }}"
+          file: "Dockerfile"
           builder: ${{ steps.buildx.outputs.name }}
           push: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
           context: .
           platforms: ${{ matrix.platform }}
+          build-args: "php=${{ matrix.php }}"
           labels: |
             org.opencontainers.image.title=PHP ${{ matrix.php }}
             org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
