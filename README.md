@@ -4,7 +4,7 @@ Work in progress.
 
 ## TODO
 
-- [ ] Make sure @dependabot can keep the various PHP versions up to date
+- [x] Make sure @dependabot can keep the various PHP versions up to date
 - [ ] Documentation on how to use
 - [ ] Documentation on the philosophie behind the images
 - [ ] Documentation on how to migrate from [old Reload images](https://github.com/reload/docker-drupal-php7-fpm)
