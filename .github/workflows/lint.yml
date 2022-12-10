@@ -27,7 +27,7 @@ jobs:
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@1.1.0
         with:
-          scandir: ./context/etc/features.d ./context/usr/bin
+          scandir: ./scripts ./context/etc/features.d ./context/usr/bin
   yaml:
     name: yaml
     runs-on: ubuntu-latest
