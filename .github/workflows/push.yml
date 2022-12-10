@@ -33,9 +33,6 @@ jobs:
         uses: docker/setup-buildx-action@master
       - name: Build PHP ${{ matrix.php }} (${{ matrix.platform }})
         uses: docker/build-push-action@v3
-        env:
-          COMPOSE_DOCKER_CLI_BUILD: 1
-          DOCKER_BUILDKIT: 1
         with:
           file: "Dockerfile"
           builder: ${{ steps.buildx.outputs.name }}

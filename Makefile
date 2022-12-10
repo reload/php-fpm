@@ -1,6 +1,3 @@
-export COMPOSE_DOCKER_CLI_BUILD=1
-export DOCKER_BUILDKIT=1
-
 PLATFORMS=$(shell docker version --format '{{.Server.Os}}/{{.Server.Arch}}')
 VERSIONS=$(shell grep -Po 'FROM .*php:.*AS \Kphp.*' Dockerfile)
 TESTS=$(subst php,test,$(VERSIONS))
