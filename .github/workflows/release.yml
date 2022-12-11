@@ -31,7 +31,6 @@ jobs:
       fail-fast: false
       matrix:
         php: ${{ fromJSON(needs.php-versions.outputs.matrix) }}
-        platform: [linux/arm64, linux/amd64]
     steps:
       - uses: actions/checkout@v3
       - name: Set up QEMU
@@ -45,14 +44,14 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.PAT_TOKEN }}
-      - name: Build PHP ${{ matrix.php }} (${{ matrix.platform }})
+      - name: Build PHP ${{ matrix.php }}
         uses: docker/build-push-action@v3
         with:
           file: "Dockerfile"
           builder: ${{ steps.buildx.outputs.name }}
           push: true
           context: .
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64,linux/arm64
           build-args: "php=${{ matrix.php }}"
           labels: |
             org.opencontainers.image.title=PHP ${{ matrix.php }}
