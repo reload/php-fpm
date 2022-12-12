@@ -1,0 +1,8 @@
+# Enabled via /usr/local/bin/xdebug-start
+
+# Disable remote connectback - we assume we have a better way to the server
+xdebug.discover_client_host = false
+
+# Docker for mac ships with a hostname that resolves to the internal ip of the
+# mac.
+xdebug.client_host = host.docker.internal

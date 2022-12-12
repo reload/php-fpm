@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+# Disable is done on exit, this means that no matter what happens (eg the
+# user doing a ^C) we will attempt to re-disable xdebug.
+function disable {
+    echo '- disabling xdebug' && \
+    docker-php-ext-disable-xdebug
+    if should_use_internal_hostname; then
+        docker-php-ext-disable-xdebug-use-docker-remote-host
+    fi
+    echo '- reloading php-fpm'
+    pkill -HUP 'php-fpm'
+    exit $?
+}
+
+# Test whether it's ok to use host.docker.internal for xdebug.remote_host.
+#
+# See https://docs.docker.com/docker-for-mac/networking regarding
+# host.docker.internal
+function should_use_internal_hostname {
+    # Make sure the the user is not providing a remote_host and we can look up
+    # hosts host.docker.internal.
+    [[ ! "${XDEBUG_CONFIG:-}" = *"client_host"* ]] && getent hosts host.docker.internal > /dev/null
+}
+
+# Trap exit
+trap disable EXIT
+
+# First step is to enable xdebug.
+echo '- enabling xdebug'
+docker-php-ext-enable-xdebug
+if should_use_internal_hostname; then
+    docker-php-ext-enable-xdebug-use-docker-remote-host
+    echo '- setting host.docker.internal as remote_host'
+fi
+
+echo '- reloading php-fpm'
+pkill -HUP 'php-fpm'
+
+# Then we prompt the user.
+echo ""
+read -r -p "*** Xdebug enabled, press enter to disable again ***"
+echo ""
+
+# When we reach this point the script exists, and triggers our trap.
