@@ -1,9 +1,9 @@
-ARG php="8.1"
+ARG php="8.2"
 
 ## Base PHP images
 FROM docker.io/library/php:8.0-fpm-alpine@sha256:8c29a2403a1067239d7496542789573e782d8be283c7f43178bed124f293f6a0 AS php8.0
 FROM docker.io/library/php:8.1-fpm-alpine@sha256:a402fe4a2a089932dfbcdd74e320731f77ef664443315ce40fa7129f942212ec AS php8.1
-FROM docker.io/library/php:8.2-rc-fpm-alpine@sha256:fc0ada6703422017af8c2c7a501d1bf41fa3c2289ec9247747cc83d94cc05d71 AS php8.2
+FROM docker.io/library/php:8.2-fpm-alpine@sha256:922fa9038781e96eca5faabf57ff4e23821c1956047da32d98c78023cc006f57 AS php8.2
 
 ## Helper images
 FROM blackfire/blackfire:2@sha256:c58e3d1778fa34c35f92c9fb5a893f8d4c6e9740f38f61330a27636270fcaf1f AS blackfire
