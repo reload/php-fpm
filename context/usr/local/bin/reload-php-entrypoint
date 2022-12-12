@@ -2,9 +2,8 @@
 
 mkdir -p /etc/entrypoint.d
 
-for feature in $USE_FEATURES
-do
-    [ -x "/etc/features.d/$feature" ] && "/etc/features.d/$feature"
+for feature in $USE_FEATURES; do
+	[ -x "/etc/features.d/$feature" ] && "/etc/features.d/$feature"
 done
 
 /bin/run-parts --exit-on-error /etc/entrypoint.d

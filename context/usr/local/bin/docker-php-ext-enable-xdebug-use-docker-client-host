@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if test -f '/usr/local/etc/php/conf.d/xdebug-use-docker-remote-host.ini-disabled'; then
+	echo 'Enabling xdebug-use-docker-remote-host.ini'
+	mv '/usr/local/etc/php/conf.d/xdebug-use-docker-remote-host.ini-disabled' '/usr/local/etc/php/conf.d/xdebug-use-docker-remote-host.ini'
+else
+	echo 'xdebug-use-docker-remote-host.ini has already been enabled'
+fi

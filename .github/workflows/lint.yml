@@ -9,14 +9,14 @@ permissions:
 jobs:
   markdown:
     name: markdown
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Run markdownlint
-        uses: actionshub/markdownlint@2.0.2
+        uses: actionshub/markdownlint@main
   dockerfile:
     name: dockerfile
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Run hadolint
@@ -25,17 +25,15 @@ jobs:
           trusted-registries: docker.io,ghcr.io
   shell-scripts:
     name: shell scripts
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@1.1.0
-        with:
-          scandir: ./scripts ./context/etc/features.d ./context/usr/bin
+        uses: luizm/action-sh-checker@master
   yaml:
     name: yaml
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - name: Yamllint Github Action
-        uses: karancode/yamllint-github-action@v2.0.0
+      - name: Run Yamllint
+        uses: frenck/action-yamllint@v1.3.1
