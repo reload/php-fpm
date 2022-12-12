@@ -29,9 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@1.1.0
-        with:
-          scandir: ./scripts ./context/etc/features.d ./context/usr/bin
+        uses: luizm/action-sh-checker@master
   yaml:
     name: yaml
     runs-on: ubuntu-22.04
