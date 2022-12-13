@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 readarray -t exts < <(jq -r '(.require//{}) * (."require-dev"//{})|to_entries|map(select(.key|startswith("ext-"))|.key|split("-")[1])|.[]' <composer.json)
 
