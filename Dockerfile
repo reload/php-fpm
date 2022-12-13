@@ -15,7 +15,7 @@ FROM mlocati/php-extension-installer:1@sha256:64e849acdeb0aa37ebd4ce0d687495296d
 FROM php${php}
 
 ARG php_enable_extensions="bcmath calendar ctype curl dom exif fileinfo ftp gd gettext iconv imagick intl json mbstring memcache memcached mysqli mysqlnd opcache pdo pdo_mysql pdo_sqlite phar posix readline redis shmop simplexml soap sockets sqlite3 sysvmsg sysvsem sysvshm tokenizer xml xmlreader xmlwriter xsl zip"
-ARG php_install_extensions="xdebug"
+ARG php_install_extensions="blackfire xdebug"
 
 HEALTHCHECK CMD netstat -ltn | grep -c ":9000"
 
