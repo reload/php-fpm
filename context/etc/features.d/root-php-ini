@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+if [ -r php.ini ]; then
+	ln -v -f -s "$(readlink -f php.ini)" "$(php-config --ini-dir)/root-php.ini"
+fi
