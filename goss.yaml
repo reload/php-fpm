@@ -19,4 +19,4 @@ command:
   php --version:
     exit-status: 0
     stdout:
-      - PHP {{getEnv "PHP_VERSION"}}
+      - PHP {{ .Vars.php_version }}
