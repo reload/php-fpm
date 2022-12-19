@@ -54,4 +54,4 @@ jobs:
         if: ${{ (matrix.platform == 'linux/amd64') }}
         run: |
           # Sleep a bit to ensure that PHP-FPM has time to start up.
-          GOSS_SLEEP=15 dgoss run -e PHP_VERSION="${{ matrix.php }}" ghcr.io/${{ github.repository }}:${{ matrix.php }}
+          GOSS_SLEEP=15 dgoss run -e GOSS_VARS_INLINE='php_version: "${{ matrix.php }}"' ghcr.io/${{ github.repository }}:${{ matrix.php }}

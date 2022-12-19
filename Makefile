@@ -25,4 +25,4 @@ $(VERSIONS): ## Build Docker image for PHP version
 test: $(TESTS) ## Run tests for ghcr.io/reload/php-fpm version
 
 $(TESTS): $(subst test,php,$@)
-	dgoss run -e PHP_VERSION=$(subst test,,$@) ghcr.io/reload/php-fpm:$(subst test,,$@)
+	dgoss run -e GOSS_VARS_INLINE='php_version: "$(subst test,,$@)"' ghcr.io/reload/php-fpm:$(subst test,,$@)
