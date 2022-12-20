@@ -8,6 +8,7 @@ Work in progress.
 - [ ] Documentation on how to use
 - [ ] Documentation on the philosophie behind the images
 - [ ] Documentation on how to migrate from [old Reload images](https://github.com/reload/docker-drupal-php7-fpm)
+- [ ] Find better way to determine document root
 - [ ] Drupal specific configuration (I know how I want this done)
 - [x] Blackfire integration
 - [x] Xdebug integration
