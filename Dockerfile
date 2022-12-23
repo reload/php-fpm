@@ -29,6 +29,10 @@ RUN apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~10 msmtp=~1 patch=~2
     install-php-extensions ${php_enable_extensions} && \
     IPE_DONT_ENABLE=1 install-php-extensions ${php_install_extensions}
 
+ARG workdir=/var/www
+WORKDIR "${workdir}"
+ENV PHP_DOCUMENT_ROOT="${workdir}/web"
+
 ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp --read-recipients --read-envelope-from"
 
 ENTRYPOINT [ "reload-php-entrypoint" ]
