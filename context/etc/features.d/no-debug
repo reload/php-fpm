@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+if [ -r "$(php-config --ini-dir)/debug.ini" ]; then
+	mv "$(php-config --ini-dir)/debug.ini" "$(php-config --ini-dir)/debug.ini-disabled"
+fi
