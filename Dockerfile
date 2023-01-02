@@ -31,6 +31,7 @@ RUN apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~10 msmtp=~1 patch=~2
 
 ARG workdir=/var/www
 WORKDIR "${workdir}"
+ENV PATH="${workdir}/vendor/bin:${PATH}"
 ENV PHP_DOCUMENT_ROOT="${workdir}/web"
 
 ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp --read-recipients --read-envelope-from"
