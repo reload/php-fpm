@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-if [ -r "$(php-config --ini-dir)/drupal.ini-disabled" ]; then
-	mv "$(php-config --ini-dir)/drupal.ini-disabled" "$(php-config --ini-dir)/drupal.ini"
-fi
