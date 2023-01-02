@@ -6,4 +6,4 @@ done
 
 /bin/run-parts --exit-on-error /etc/entrypoint.d
 
-/usr/local/bin/docker-php-entrypoint "$@"
+exec /usr/local/bin/docker-php-entrypoint "$@"
