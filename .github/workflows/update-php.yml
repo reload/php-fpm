@@ -31,3 +31,4 @@ jobs:
           delete-branch: true
           title: Update PHP Docker image SHAs
           token: ${{ secrets.PAT_TOKEN }}
+          team-reviewers: reload/developers
