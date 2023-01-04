@@ -25,15 +25,19 @@ COPY --from=blackfire /usr/local/bin/blackfire /usr/bin
 COPY --from=composer /usr/bin/composer /usr/bin
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
-RUN apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~10 msmtp=~1 patch=~2 unzip=~6 graphicsmagick=~1 tini=~0 && \
+RUN apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~10 msmtp=~1 patch=~2 unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0 && \
     install-php-extensions ${php_enable_extensions} && \
-    IPE_DONT_ENABLE=1 install-php-extensions ${php_install_extensions}
+    IPE_DONT_ENABLE=1 install-php-extensions ${php_install_extensions} && \
+    adduser -H -D -S -G wheel -u 501 machost && \
+    adduser -H -D -S -G wheel -u 1000 linuxhost
 
 ARG workdir=/var/www
 WORKDIR "${workdir}"
+
+ENV COMPOSER_CACHE_DIR="/tmp/composer-cache"
+ENV GIT_CEILING_DIRECTORIES="${workdir}"
 ENV PATH="${workdir}/vendor/bin:${PATH}"
 ENV PHP_DOCUMENT_ROOT="${workdir}/web"
-ENV COMPOSER_CACHE_DIR="/tmp/composer-cache"
 ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp --read-recipients --read-envelope-from"
 
 ENTRYPOINT [ "/sbin/tini", "--" ]
