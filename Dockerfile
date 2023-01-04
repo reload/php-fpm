@@ -31,11 +31,12 @@ RUN apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~10 msmtp=~1 patch=~2
 
 ARG workdir=/var/www
 WORKDIR "${workdir}"
+
+ENV COMPOSER_CACHE_DIR="/tmp/composer-cache"
+ENV GIT_CEILING_DIRECTORIES="${workdir}"
 ENV PATH="${workdir}/vendor/bin:${PATH}"
 ENV PHP_DOCUMENT_ROOT="${workdir}/web"
-ENV COMPOSER_CACHE_DIR="/tmp/composer-cache"
 ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp --read-recipients --read-envelope-from"
-ENV GIT_CEILING_DIRECTORIES="${workdir}"
 
 ENTRYPOINT [ "/sbin/tini", "--" ]
 CMD [ "reload-php-entrypoint", "php-fpm" ]
