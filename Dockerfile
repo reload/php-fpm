@@ -25,11 +25,13 @@ COPY --from=blackfire /usr/local/bin/blackfire /usr/bin
 COPY --from=composer /usr/bin/composer /usr/bin
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
-RUN apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~10 msmtp=~1 patch=~2 unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0 && \
-    install-php-extensions ${php_enable_extensions} && \
-    IPE_DONT_ENABLE=1 install-php-extensions ${php_install_extensions} && \
-    adduser -H -D -S -G wheel -u 501 machost && \
+RUN <<EOT
+    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~10 msmtp=~1 patch=~2 unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
+    install-php-extensions ${php_enable_extensions}
+    IPE_DONT_ENABLE=1 install-php-extensions ${php_install_extensions}
+    adduser -H -D -S -G wheel -u 501 machost
     adduser -H -D -S -G wheel -u 1000 linuxhost
+EOT
 
 ARG workdir=/var/www
 WORKDIR "${workdir}"
