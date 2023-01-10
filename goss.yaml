@@ -12,8 +12,10 @@ port:
 command:
   blackfire:
     exit-status: 0
-  composer:
+  composer --version:
     exit-status: 0
+    stdout:
+      - Composer version 2
   install-php-extensions:
     exit-status: 0
   php --version:
