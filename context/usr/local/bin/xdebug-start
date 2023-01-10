@@ -3,6 +3,11 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+if [ "${EUID}" -ne 0 ]; then
+	echo 'Please run as root using sudo'
+	exit 1
+fi
+
 # Disable is done on exit, this means that no matter what happens (eg the
 # user doing a ^C) we will attempt to re-disable xdebug.
 function disable {
@@ -23,7 +28,7 @@ function disable {
 function should_use_internal_hostname {
 	# Make sure the the user is not providing a client_host and we can look up
 	# hosts host.docker.internal.
-	[[ ! "${XDEBUG_CONFIG:-}" = *"client_host"* ]] && getent hosts host.docker.internal >/dev/null
+	[[ ! ${XDEBUG_CONFIG:-} == *"client_host"* ]] && getent hosts host.docker.internal >/dev/null
 }
 
 function restart_php_fpm {
