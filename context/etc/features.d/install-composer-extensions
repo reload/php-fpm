@@ -6,4 +6,4 @@ if [ ${#exts[@]} -eq 0 ]; then
 	exit
 fi
 
-install-php-extensions "${exts[@]}"
+sudo install-php-extensions "${exts[@]}"

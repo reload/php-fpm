@@ -3,18 +3,13 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-if [ "${EUID}" -ne 0 ]; then
-	echo 'Please run as root using sudo'
-	exit 1
-fi
-
 # Disable is done on exit, this means that no matter what happens (eg the
 # user doing a ^C) we will attempt to re-disable xdebug.
 function disable {
 	echo '- disabling xdebug' &&
-		docker-php-ext-disable-xdebug
+		sudo docker-php-ext-disable-xdebug
 	if should_use_internal_hostname; then
-		docker-php-ext-disable-xdebug-use-docker-client-host
+		sudo docker-php-ext-disable-xdebug-use-docker-client-host
 	fi
 	echo '- reloading php-fpm'
 	restart_php_fpm
@@ -40,9 +35,9 @@ trap disable EXIT
 
 # First step is to enable xdebug.
 echo '- enabling xdebug'
-docker-php-ext-enable-xdebug
+sudo docker-php-ext-enable-xdebug
 if should_use_internal_hostname; then
-	docker-php-ext-enable-xdebug-use-docker-client-host
+	sudo docker-php-ext-enable-xdebug-use-docker-client-host
 	echo '- setting host.docker.internal as client_host'
 fi
 
