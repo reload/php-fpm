@@ -42,5 +42,5 @@ ENV PATH="${workdir}/vendor/bin:${PATH}"
 ENV PHP_DOCUMENT_ROOT="${workdir}/web"
 ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp --read-recipients --read-envelope-from"
 
-ENTRYPOINT [ "/sbin/tini", "--" ]
-CMD [ "reload-php-entrypoint", "php-fpm" ]
+ENTRYPOINT [ "/sbin/tini", "--", "reload-php-entrypoint" ]
+CMD [ "php-fpm" ]
