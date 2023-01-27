@@ -18,7 +18,7 @@ services:
       - '9000'
     user: '${UID:-501}:${GID:-20}'
     volumes:
-      - .:/var/www'
+      - '.:/var/www'
     environment:
       USE_FEATURES: >-
         root-php-ini
@@ -67,8 +67,9 @@ location.
 
 ## PHP extensions
 
-The images come with the following tools installed and enable:
+The images come with the following extensions installed and enabled:
 
+- apcu
 - bcmath
 - calendar
 - ctype
@@ -123,6 +124,16 @@ tool is installed if you want to install addtional extensions your self.
 If you place executables (e.g. by mounting them there) in
 `/etc/entrypoint.d` they will be run prior to starting FPM.
 
+## Reloading php-fpm
+
+If you have changed PHP configuration or enabled or disabled some PHP
+extensions you can restart the `php-fpm` process with the
+`/usr/local/bin/reload` command. E.g.
+
+```console
+docker compose exec php reload
+```
+
 ## "Features"
 
 The images come with a concept called "features".
@@ -156,7 +167,23 @@ Disable the PHP ini settings in
 
 ## Xdebug
 
-@todo
+Xdebug is disabled by default but the extension is available. To
+enable the xdebug-extension execute `/usr/local/bin/xdebug` via
+Docker, e.g.:
+
+```console
+docker exec -it <container id> xdebug
+```
+
+Or via Docker Compose, e.g. if the image is used by a service called
+`php`:
+
+```console
+docker compose exec php xdebug
+```
+
+The script keeps xdebug enabled while running and is terminated by
+typing enter.
 
 ## Blackfire
 

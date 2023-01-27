@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -u
+
+echo -n 'Reloading php-fpm... '
+pkill -USR2 -o php-fpm
+ret=$?
+
+if [ $ret -ne 0 ]; then
+	echo failed
+	exit $ret
+fi
+
+echo ok
