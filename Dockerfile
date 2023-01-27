@@ -14,7 +14,7 @@ FROM mlocati/php-extension-installer:2@sha256:5c8453ecbc10bc3eabf0a82768a11f5ed3
 # hadolint ignore=DL3006
 FROM php${php}
 
-ARG php_enable_extensions="bcmath calendar ctype curl dom exif fileinfo ftp gd gettext iconv imagick intl json mbstring memcache memcached mysqli mysqlnd opcache pdo pdo_mysql pdo_sqlite phar posix readline redis shmop simplexml soap sockets sqlite3 sysvmsg sysvsem sysvshm tokenizer xml xmlreader xmlwriter xsl zip"
+ARG php_enable_extensions="apcu bcmath calendar ctype curl dom exif fileinfo ftp gd gettext iconv imagick intl json mbstring memcache memcached mysqli mysqlnd opcache pdo pdo_mysql pdo_sqlite phar posix readline redis shmop simplexml soap sockets sqlite3 sysvmsg sysvsem sysvshm tokenizer xml xmlreader xmlwriter xsl zip"
 ARG php_install_extensions="blackfire xdebug"
 
 HEALTHCHECK --interval=10s --start-period=90s CMD netstat -ltn | grep -c ":9000"
