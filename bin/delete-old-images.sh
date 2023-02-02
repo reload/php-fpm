@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
 # We need to figure out how many images to keep. First we count how
-# many PHP versions we support in the Dockerfile. The we multiple that
-# number by 3, because there will be a tagged multiarch image for each
-# version and then an additional one for linux/amd64 and one for
-# linux/arm64.
+# many PHP versions we support in the Dockerfile. Then we multiply
+# that number by 5 because that appears to be the number of actual
+# images uploaded to ghcr.io (because of multiarch etc.).
 php_versions_count=$(grep --count 'AS php[0-9\.]' Dockerfile)
-image_count=$((php_versions_count * 3))
+image_count=$((php_versions_count * 5))
 
 versions=$(curl \
 	--silent \
