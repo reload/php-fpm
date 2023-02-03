@@ -165,6 +165,24 @@ loaded by FPM.
 Disable the PHP ini settings in
 [`debug.ini`](/blob/main/context/usr/local/etc/php/conf.d/debug.ini).
 
+### `update-ca-certificates`
+
+If your container needs to use custom CA certificates place them in
+`/usr/local/share/ca-certificates/` using volumes and use the feature
+`update-ca-certificates`.
+
+```yaml
+services:
+  php:
+    image: 'ghcr.io/reload/php-fpm:8.2'
+    volumes:
+      - '.:/var/www'
+      - './my-ca.pem:/usr/local/share/ca-certificates/my-ca.pem:ro'
+    environment:
+      USE_FEATURES: >-
+        update-ca-certificates
+ ```
+
 ## Xdebug
 
 Xdebug is disabled by default but the extension is available. To
