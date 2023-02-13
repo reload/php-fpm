@@ -10,9 +10,7 @@ updates:
       - "reload/developers"
     ignore:
       - dependency-name: "php"
-        update-times: ["version-update:semver-major", "version-update:semver-minor", "version-update:semver-patch"]
       - dependency-name: "library/php"
-        update-times: ["version-update:semver-major", "version-update:semver-minor", "version-update:semver-patch"]
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
