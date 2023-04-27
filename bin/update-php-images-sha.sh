@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 mapfile -t versions < <(grep -E '^FROM .* AS php[0-9\.]+$' Dockerfile | cut -f 4 -d ' ')
 
 for version in "${versions[@]}"; do
