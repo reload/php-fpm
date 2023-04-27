@@ -43,12 +43,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Checking if enabled PHP extensions are documented in README.md
-        run: |
-          set +e
-          LINE=$(grep -n '## PHP extensions' README.md | cut -f 1 -d :)
-          STATUS=0
-          trap '{ (( STATUS++ )) ; }' ERR
-          for EXT in $(grep 'ARG php_enable_extensions' Dockerfile | cut -f 2 -d = | tr --delete '"'); do
-                  grep -q -- "- ${EXT}\$" README.md || (echo "::error file=README.md,line=${LINE}::PHP extension '${EXT}' not documented." ; exit 1)
-          done
-          exit ${STATUS}
+        run: ./bin/check-doc.sh
