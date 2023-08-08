@@ -14,6 +14,7 @@ FROM mlocati/php-extension-installer:2@sha256:c3a2b786a0ed48919fea7af99bbc2732e5
 # hadolint ignore=DL3006
 FROM php${php}
 
+ARG php=${php}
 ARG php_enable_extensions="apcu bcmath calendar ctype curl dom exif fileinfo ftp gd gettext iconv imagick intl json mbstring memcache memcached mysqli mysqlnd opcache pdo pdo_mysql pdo_sqlite phar posix readline redis shmop simplexml soap sockets sqlite3 sysvmsg sysvsem sysvshm tokenizer xml xmlreader xmlwriter xsl zip"
 ARG php_install_extensions="blackfire xdebug"
 
@@ -32,6 +33,9 @@ RUN <<EOT
     adduser -H -D -S -G wheel -u 501 machost
     adduser -H -D -S -G wheel -u 1000 linuxhost
 EOT
+
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+RUN curl https://endoflife.date/api/php/${php}.json| jq '{support,eol,lts}' > /etc/eol.json
 
 ARG workdir=/var/www
 WORKDIR "${workdir}"
