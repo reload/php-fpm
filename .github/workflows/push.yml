@@ -12,7 +12,7 @@ jobs:
     outputs:
       matrix: ${{ env.php_versions }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Lookup PHP versions
         run: echo "php_versions=$(make _versions)" >> $GITHUB_ENV
   build:
@@ -25,7 +25,7 @@ jobs:
         php: ${{ fromJSON(needs.php-versions.outputs.matrix) }}
         platform: [linux/arm64, linux/amd64]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
