@@ -205,7 +205,29 @@ typing enter.
 
 ## Blackfire
 
-@todo
+In order to send profiles to Blackfire, you'll need to have a
+Blackfire agent reachable by the php-fpm image and the appropriate
+credentials.
+
+Providing an agent in docker compose is easy, as it's just starting
+the orignial Blackfire image.
+
+``` yaml
+  php:
+    image: 'ghcr.io/reload/php-fpm:8.2'
+    environment:
+      BLACKFIRE_CLIENT_ID: <your client key>
+      BLACKFIRE_CLIENT_TOKEN: <your client token>
+  blackfire:
+    image: blackfire/blackfire
+    environment:
+      BLACKFIRE_SERVER_ID: <your server key>
+      BLACKFIRE_SERVER_TOKEN: <your server token>
+```
+
+The correct id's and tokens can be found by viewing the [Blackfire
+setup documentation](https://blackfire.io/docs/php/configuration) when
+logged in.
 
 ## Mail
 
