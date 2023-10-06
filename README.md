@@ -212,14 +212,14 @@ credentials.
 Providing an agent in docker compose is easy, as it's just starting
 the orignial Blackfire image.
 
-``` yaml
+```yaml
   php:
     image: 'ghcr.io/reload/php-fpm:8.2'
     environment:
       BLACKFIRE_CLIENT_ID: <your client key>
       BLACKFIRE_CLIENT_TOKEN: <your client token>
   blackfire:
-    image: blackfire/blackfire
+    image: 'blackfire/blackfire'
     environment:
       BLACKFIRE_SERVER_ID: <your server key>
       BLACKFIRE_SERVER_TOKEN: <your server token>
@@ -239,11 +239,11 @@ For simple development setups we recommend combining it with
 
 ```yaml
   php:
-    image: ghcr.io/reload/php-fpm:8.2
+    image: 'ghcr.io/reload/php-fpm:8.2'
     environment:
-      SMTPSERVER: mail
+      SMTPSERVER: 'mail'
   mail:
-    image: axllent/mailpit
+    image: 'axllent/mailpit'
     ports:
       - '25'
       - '80'
