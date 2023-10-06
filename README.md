@@ -231,16 +231,26 @@ logged in.
 
 ## Mail
 
-@todo
+The image has [`mstmp`](https://marlam.de/msmtp/) installed. `msmtp`
+is an SMTP client.
 
-## TODO
+For simple development setups we recommend combining it with
+[Mailpit](https://github.com/axllent/mailpit):
 
-- [x] Make sure @dependabot can keep the various PHP versions up to date
-- [ ] Documentation on how to use
-- [ ] Documentation on the philosophie behind the images
-- [ ] Documentation on how to migrate from [old Reload images](https://github.com/reload/docker-drupal-php7-fpm)
-- [x] Find better way to determine document root
-- [x] Drupal specific configuration (I know how I want this done)
-- [x] Blackfire integration
-- [x] Xdebug integration
-- [x] Run goss test on GitHub CI
+```yaml
+  php:
+    image: ghcr.io/reload/php-fpm:8.2
+    environment:
+      SMTPSERVER: mail
+  mail:
+    image: axllent/mailpit
+    ports:
+      - '25'
+      - '80'
+    environment:
+      MP_SMTP_BIND_ADDR: '0.0.0.0:25'
+      MP_UI_BIND_ADDR: '0.0.0.0:80'
+```
+
+For more advanced usages you can add a system wide configuration file
+for msmtp at `/etc/msmtprc` in the php-fpm image.
