@@ -1,7 +1,7 @@
 # Docker PHP FPM images for development use
 
 This is a PHP FPM Docker image tuned to be used in Docker Compose
-setups for devlopment environments.
+setups for development environments.
 
 We have tried to hit a sweet stuff between not doing too much magic,
 but still be an easy fit for how we do work at [Reload
@@ -28,14 +28,15 @@ services:
 
 We provide PHP 8.0, 8.1, and 8.2 images.
 
-PHP 7.x versions are no longer supported upstream so we won't provide
+PHP 7.x versions are no longer supported upstream, so we won't provide
 them either.
 
 The images are based on the official [`php:8.x-fpm-alpine` Docker
 images](https://hub.docker.com/_/php). We build new images when new
 upstream versions are released.
 
-The image has some PHP settings set for devlopment / debuging use, see
+The image has some PHP settings set for development / debugging use,
+see
 [`debug.ini`](/blob/main/context/usr/local/etc/php/conf.d/debug.ini). They
 can be disabled with `no-debug` feature mentioned later in this
 document.
@@ -43,10 +44,10 @@ document.
 ## User
 
 The images are designed to be able to run as root inside the container
-or as uid `501` (MacOS typical user ID) or uid `1000` (Linux typical
+or as UID `501` (macOS typical user ID) or UID `1000` (Linux typical
 user ID). Other user ID's might work as well.
 
-This being an image for development use we have installed `sudo` and
+This being an image for development use, we have installed `sudo` and
 configured all users in the container to use it without providing a
 password.
 
@@ -57,12 +58,12 @@ Docker workdir, `/var/www`.
 
 ## PHP Document root
 
-FPM exptects PHP's document root to be located in `/var/www/web`. That
+FPM expects PHP's document root to be located in `/var/www/web`. That
 would be a `web` folder inside your project root if you follow our
 practice.
 
-If you would like the document root to be located elsewhere you should
-set the environment variable `PHP_DOCUMENT_ROOT` to the desired
+If you would like the document root to be located elsewhere, you
+should set the environment variable `PHP_DOCUMENT_ROOT` to the desired
 location.
 
 ## PHP extensions
@@ -112,22 +113,23 @@ The images come with the following extensions installed and enabled:
 - xsl
 - zip
 
-In addtion the `xdebug` and `blackfire` extensions are installed but
+In addition, the `xdebug` and `blackfire` extensions are installed but
 not enabled in the images.
 
 The
 [php-extension-installer](https://github.com/mlocati/docker-php-extension-installer)
-tool is installed if you want to install addtional extensions your self.
+tool is installed if you want to install additional extensions
+yourself.
 
-## Entrypoint scripts
+## Entry point scripts
 
-If you place executables (e.g. by mounting them there) in
-`/etc/entrypoint.d` they will be run prior to starting FPM.
+If you place executables (e.g., by mounting them there) in
+`/etc/entrypoint.d` they will be run before starting FPM.
 
 ## Reloading php-fpm
 
 If you have changed PHP configuration or enabled or disabled some PHP
-extensions you can restart the `php-fpm` process with the
+extensions, you can restart the `php-fpm` process with the
 `/usr/local/bin/reload` command. E.g.
 
 ```console
@@ -138,22 +140,24 @@ docker compose exec php reload
 
 The images come with a concept called "features".
 
-Features a predefined entrypoint scripts with common functionality you
-can opt-in to using.
+Features a predefined entry point scripts with common functionality
+you can opt in to using.
 
-Features a run prior to the entrypoint scripts mentioned before.
+Features a run before the entry point scripts mentioned before.
 
-You opt-in to using them by setting the `USE_FEATURES` to a space
+You opt in to using them by setting the `USE_FEATURES` to a space
 separated list of their names.
 
 ### `install-composer-extensions` feature
 
 If you have a `composer.json` in your workdir (`/var/www`) this
-feature will locate requied depenencies on PHP extensions `ext-*` and
-install them using the aforementioned `php-extension-installer` tool.
+feature will locate required dependencies on PHP extensions `ext-*`
+and install them using the aforementioned `php-extension-installer`
+tool.
 
-Notice: if this needs to install a lot of libraries and do a lot
-compilation this could take quite some time when creating the container.
+Notice: if this needs to install numerous libraries and do a lot of
+compilation, this could take quite some time when creating the
+container.
 
 ### `root-php-ini` feature
 
@@ -167,9 +171,9 @@ Disable the PHP ini settings in
 
 ### `update-ca-certificates`
 
-If your container needs to use custom CA certificates place them in
-`/usr/local/share/ca-certificates/` using volumes and use the feature
-`update-ca-certificates`.
+If your container needs to use custom CA certificates, place them in
+`/usr/local/share/ca-certificates/` using volumes and using the
+feature `update-ca-certificates`.
 
 ```yaml
 services:
@@ -185,15 +189,15 @@ services:
 
 ## Xdebug
 
-Xdebug is disabled by default but the extension is available. To
+Xdebug is disabled by default, but the extension is available. To
 enable the xdebug-extension execute `/usr/local/bin/xdebug` via
-Docker, e.g.:
+Docker, e.g.,
 
 ```console
 docker exec -it <container id> xdebug
 ```
 
-Or via Docker Compose, e.g. if the image is used by a service called
+Or via Docker Compose, e.g., if the image is used by a service called
 `php`:
 
 ```console
@@ -205,12 +209,11 @@ typing enter.
 
 ## Blackfire
 
-In order to send profiles to Blackfire, you'll need to have a
-Blackfire agent reachable by the php-fpm image and the appropriate
-credentials.
+To send profiles to Blackfire, you'll need to have a Blackfire agent,
+reachable by the php-fpm image and the appropriate credentials.
 
 Providing an agent in docker compose is easy, as it's just starting
-the orignial Blackfire image.
+the original Blackfire image.
 
 ```yaml
   php:
@@ -225,7 +228,7 @@ the orignial Blackfire image.
       BLACKFIRE_SERVER_TOKEN: <your server token>
 ```
 
-The correct id's and tokens can be found by viewing the [Blackfire
+The correct ID's and tokens can be found by viewing the [Blackfire
 setup documentation](https://blackfire.io/docs/php/configuration) when
 logged in.
 
@@ -234,7 +237,7 @@ logged in.
 The image has [`mstmp`](https://marlam.de/msmtp/) installed. `msmtp`
 is an SMTP client.
 
-For simple development setups we recommend combining it with
+For simple development setups, we recommend combining it with
 [Mailpit](https://github.com/axllent/mailpit):
 
 ```yaml
@@ -252,5 +255,5 @@ For simple development setups we recommend combining it with
       MP_UI_BIND_ADDR: '0.0.0.0:80'
 ```
 
-For more advanced usages you can add a system wide configuration file
+For more advanced usages, you can add a system-wide configuration file
 for msmtp at `/etc/msmtprc` in the php-fpm image.
