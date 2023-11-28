@@ -13,7 +13,7 @@ FPM like this:
 ```yaml
 services:
   php:
-    image: 'ghcr.io/reload/php-fpm:8.2'
+    image: 'ghcr.io/reload/php-fpm:8.3'
     ports:
       - '9000'
     user: '${UID:-501}:${GID:-20}'
@@ -26,10 +26,7 @@ services:
 
 ## PHP versions
 
-We provide PHP 8.0, 8.1, and 8.2 images.
-
-PHP 7.x versions are no longer supported upstream, so we won't provide
-them either.
+We provide PHP 8.0, 8.1, 8.2 and 8.3 images.
 
 The images are based on the official [`php:8.x-fpm-alpine` Docker
 images](https://hub.docker.com/_/php). We build new images when new
@@ -178,7 +175,7 @@ feature `update-ca-certificates`.
 ```yaml
 services:
   php:
-    image: 'ghcr.io/reload/php-fpm:8.2'
+    image: 'ghcr.io/reload/php-fpm:8.3'
     volumes:
       - '.:/var/www'
       - './my-ca.pem:/usr/local/share/ca-certificates/my-ca.pem:ro'
@@ -217,7 +214,7 @@ the original Blackfire image.
 
 ```yaml
   php:
-    image: 'ghcr.io/reload/php-fpm:8.2'
+    image: 'ghcr.io/reload/php-fpm:8.3'
     environment:
       BLACKFIRE_CLIENT_ID: <your client key>
       BLACKFIRE_CLIENT_TOKEN: <your client token>
@@ -242,7 +239,7 @@ For simple development setups, we recommend combining it with
 
 ```yaml
   php:
-    image: 'ghcr.io/reload/php-fpm:8.2'
+    image: 'ghcr.io/reload/php-fpm:8.3'
     environment:
       SMTPSERVER: 'mail'
   mail:
