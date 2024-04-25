@@ -5,7 +5,7 @@ status=0
 trap '{ (( status++ )) ; }' ERR
 
 linenumber=$(grep -n 'ARG php_enable_extensions' Dockerfile | cut -f 1 -d :)
-for extension in $(grep 'ARG php_enable_extensions' Dockerfile | cut -f 2 -d = | tr --delete '"'); do
+for extension in $(grep 'ARG php_enable_extensions' Dockerfile | cut -f 2 -d = | tr --delete '"' | sed -E 's#.*/(.*)@.*#\1#'); do
 	grep -q -- "- ${extension}\$" README.md || (
 		echo "::error file=Dockerfile,line=${linenumber}::PHP extension '${extension}' is not documented in README.md."
 		exit 1
