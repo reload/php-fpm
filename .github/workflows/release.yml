@@ -45,7 +45,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.PAT_TOKEN }}
       - name: Build PHP ${{ matrix.php }}
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           file: "Dockerfile"
           builder: ${{ steps.buildx.outputs.name }}
