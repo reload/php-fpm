@@ -61,3 +61,13 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
           tags: |
             ghcr.io/${{ github.repository }}:${{ matrix.php }}
+  cleanup:
+    name: Cleanup
+    runs-on: ubuntu-22.04
+    needs:
+      - build
+    steps:
+      - name: Delete old container packages
+        uses: dataaxiom/ghcr-cleanup-action@v1
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
