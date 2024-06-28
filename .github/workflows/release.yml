@@ -20,12 +20,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Lookup PHP versions
-        run: echo "php_versions=$(make _versions)" >> $GITHUB_ENV
+        run: echo "php_versions=$(make _versions)" >> "$GITHUB_ENV"
   build:
     name: PHP
     runs-on: ubuntu-22.04
     needs: php-versions
-    if: >
+    if: >-
       ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       fail-fast: false
