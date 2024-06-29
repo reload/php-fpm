@@ -43,7 +43,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.PAT_TOKEN }}
+          password: ${{ github.token }}
       - name: Build PHP ${{ matrix.php }}
         uses: docker/build-push-action@v6
         with:
@@ -70,4 +70,4 @@ jobs:
       - name: Delete old container packages
         uses: dataaxiom/ghcr-cleanup-action@v1
         with:
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ github.token }}
