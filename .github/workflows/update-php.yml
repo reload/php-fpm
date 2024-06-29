@@ -22,13 +22,8 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: "Run update script"
         run: ./bin/update-php-images-sha.sh
-      - name: Check for changes
-        run: git diff --exit-code
-        id: diff
-        continue-on-error: true
       - name: "Create pull request"
         uses: peter-evans/create-pull-request@v6
-        if: steps.diff.outcome == 'failure'
         with:
           add-paths: Dockerfile
           commit-message: Update PHP Docker image SHAs
