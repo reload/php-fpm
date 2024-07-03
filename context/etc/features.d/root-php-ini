@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-if [ -r php.ini ]; then
+if [ -r /var/www/php.ini ]; then
 	sudo ln -f -s "$(readlink -f php.ini)" "$(php-config --ini-dir)/000-php.ini"
 fi
