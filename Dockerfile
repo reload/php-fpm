@@ -3,8 +3,8 @@ ARG php="8.2"
 ## Base PHP images
 FROM php:8.0-fpm-alpine@sha256:173daec831fa47844c876258a19741c7a1928524b5e1936a2b1e7c1f58ec1b12 AS php8.0
 FROM php:8.1-fpm-alpine@sha256:a13add2aa7bdf1debe91ec56ba951823261295c907e00c2b6ffec69e842ba992 AS php8.1
-FROM php:8.2-fpm-alpine@sha256:64589cc10f53f21ecc8834c4633941d3794ce535097d2aa79b2cb6cd6f462c1e AS php8.2
-FROM php:8.3-fpm-alpine@sha256:2d59be5fd0efa02b2c6306191c00d3781182f3f06ffce89bdd46fd3f1e042f60 AS php8.3
+FROM php:8.2-fpm-alpine@sha256:f445071227e858c52d0aab62372ad4a7b4f939584fd8df3ef04071f953571f1e AS php8.2
+FROM php:8.3-fpm-alpine@sha256:f3249e872fc3d01493e22774d92757591d28bb8e4b20dc574ff2878a8efb68e7 AS php8.3
 
 ## Helper images
 FROM blackfire/blackfire:2@sha256:79c57e4d87941663f7fb4e33ec2ef93c72de881058d32de37def3d7f68995301 AS blackfire
