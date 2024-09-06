@@ -23,8 +23,6 @@ HEALTHCHECK --interval=10s --start-period=90s CMD netstat -ltn | grep -c ":9000"
 
 COPY context/ /
 
-COPY --from=blackfire /usr/local/bin/blackfire /usr/bin
-COPY --from=composer /usr/bin/composer /usr/bin
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
 RUN <<EOT
@@ -35,6 +33,9 @@ RUN <<EOT
     adduser -H -D -S -G wheel -u 501 machost
     adduser -H -D -S -G wheel -u 1000 linuxhost
 EOT
+
+COPY --from=blackfire /usr/local/bin/blackfire /usr/bin
+COPY --from=composer /usr/bin/composer /usr/bin
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN curl https://endoflife.date/api/php/${php}.json| jq '{support,eol,lts}' > /etc/eol.json
