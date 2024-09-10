@@ -1,10 +1,10 @@
 ARG php="8.2"
 
 ## Base PHP images
-FROM php:8.0-fpm-alpine@sha256:173daec831fa47844c876258a19741c7a1928524b5e1936a2b1e7c1f58ec1b12 AS php8.0
-FROM php:8.1-fpm-alpine@sha256:a13add2aa7bdf1debe91ec56ba951823261295c907e00c2b6ffec69e842ba992 AS php8.1
-FROM php:8.2-fpm-alpine@sha256:747e3f4843c75203c5e6aff70429368048cbeaa2a6e79b81f1a4e700b9e05add AS php8.2
-FROM php:8.3-fpm-alpine@sha256:dc3e7bef05e4e8960d1138bd6da361a05a073e0bd40cd072144691d71ec5b834 AS php8.3
+FROM php:8.0-fpm-alpine@sha256:bbf76d84a693fae1e0d2a259db70c9c47f41bd5a6ec3d339ba397939e7875dd8 AS php8.0
+FROM php:8.1-fpm-alpine@sha256:d25c61d176d62c1929bd1d155fc4073b5d8d0db3f4a2d1ae67f580439409fc7f AS php8.1
+FROM php:8.2-fpm-alpine@sha256:a16bc43404e602adb0f8f9662a1319f83d85daf23110bf7e02152a8a0e3d7e5e AS php8.2
+FROM php:8.3-fpm-alpine@sha256:421373ae5f16b3afa03506de0ecbb4dcf39e4fe817b2a40b5f5c1f23c041dffa AS php8.3
 
 ## Helper images
 FROM blackfire/blackfire:2@sha256:a701c54bdba874443b76ce27d2a6fbbe30e8ee517eb38823df4337b3461eef69 AS blackfire
@@ -23,8 +23,6 @@ HEALTHCHECK --interval=10s --start-period=90s CMD netstat -ltn | grep -c ":9000"
 
 COPY context/ /
 
-COPY --from=blackfire /usr/local/bin/blackfire /usr/bin
-COPY --from=composer /usr/bin/composer /usr/bin
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
 RUN <<EOT
@@ -35,6 +33,9 @@ RUN <<EOT
     adduser -H -D -S -G wheel -u 501 machost
     adduser -H -D -S -G wheel -u 1000 linuxhost
 EOT
+
+COPY --from=blackfire /usr/local/bin/blackfire /usr/bin
+COPY --from=composer /usr/bin/composer /usr/bin
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN curl https://endoflife.date/api/php/${php}.json| jq '{support,eol,lts}' > /etc/eol.json

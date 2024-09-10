@@ -53,6 +53,8 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           build-args: "php=${{ matrix.php }}"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           labels: |
             org.opencontainers.image.title=PHP ${{ matrix.php }}
             org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
