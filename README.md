@@ -111,7 +111,7 @@ The images come with the following extensions installed and enabled:
 - zip
 
 In addition, the `xdebug` and `blackfire` extensions are installed but
-not enabled in the images.
+not enabled in the images (except on PHP 8.4).
 
 The
 [php-extension-installer](https://github.com/mlocati/docker-php-extension-installer)
