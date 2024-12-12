@@ -26,7 +26,7 @@ services:
 
 ## PHP versions
 
-We provide PHP 8.0, 8.1, 8.2, 8.3 and 8.4 images.
+We provide PHP 8.1, 8.2, 8.3 and 8.4 images.
 
 The images are based on the official [`php:8.x-fpm-alpine` Docker
 images](https://hub.docker.com/_/php). We build new images when new
