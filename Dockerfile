@@ -1,11 +1,10 @@
 ARG php="8.2"
 
 ## Base PHP images
-FROM php:8.0-fpm-alpine@sha256:bbf76d84a693fae1e0d2a259db70c9c47f41bd5a6ec3d339ba397939e7875dd8 AS php8.0
-FROM php:8.1-fpm-alpine@sha256:8ac8bf3413dc08471bb8134846018f19ec688c961d2581493bd7fe91cd72b9d2 AS php8.1
-FROM php:8.2-fpm-alpine@sha256:1a6fc2aaa306a3c12264b3d1d6832a598e98f1237090ff853dc6af5db8e5a8f2 AS php8.2
-FROM php:8.3-fpm-alpine@sha256:17fa7702b3d48eb0c064e3410474c81f703b3bcb7a7fe8073503e6c7f157a29a AS php8.3
-FROM php:8.4-fpm-alpine@sha256:79e748df9762464b4fbd27c079150b3fb5535bcdd1550daacf6dfce60fb9fb86 AS php8.4
+FROM php:8.1-fpm-alpine@sha256:857e617d937d7425433a3e194594147c4553af6aeffb6d58192d1e2f78f04e8d AS php8.1
+FROM php:8.2-fpm-alpine@sha256:2e4805627ecfd6bc83037b0cfd9c89f834d5a57e68da1e3bc52727600fda9f07 AS php8.2
+FROM php:8.3-fpm-alpine@sha256:e33c5c3be36c66846266d71475f47f88cf3ce05361ad2e2f5687ff8220436b2a AS php8.3
+FROM php:8.4-fpm-alpine@sha256:dcbcd25f19919d0d80eff895322d8f8d75f0aa75ff21f906e3da11a63bd74fb3 AS php8.4
 
 ## Helper images
 FROM blackfire/blackfire:2@sha256:1df0d05684ae180dc37a139d8bf01485fdbc37f654ef91ccbdb8072172110daa AS blackfire
@@ -28,7 +27,7 @@ COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
 RUN <<EOT
     set -eux
-    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~10 msmtp=~1 patch=~2 unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
+    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
     install-php-extensions ${php_enable_extensions}
     if [ "${php}" != "8.4" ]; then IPE_DONT_ENABLE=1 install-php-extensions ${php_install_extensions}; fi
     adduser -H -D -S -G wheel -u 501 machost
