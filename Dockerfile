@@ -17,7 +17,6 @@ FROM php${php}
 
 ARG php=${php}
 ARG php_enable_extensions="apcu bcmath calendar ctype curl dom exif fileinfo ftp gd gettext iconv imagick intl json mbstring memcache memcached mysqli mysqlnd opcache pdo pdo_mysql pdo_sqlite phar posix readline redis shmop simplexml soap sockets sqlite3 sysvmsg sysvsem sysvshm tokenizer xml xmlreader xmlwriter xsl zip"
-ARG php_install_extensions="blackfire xdebug"
 
 HEALTHCHECK --interval=10s --start-period=90s CMD netstat -ltn | grep -c ":9000"
 
@@ -29,7 +28,8 @@ RUN <<EOT
     set -eux
     apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
     install-php-extensions ${php_enable_extensions}
-    if [ "${php}" != "8.4" ]; then IPE_DONT_ENABLE=1 install-php-extensions ${php_install_extensions}; fi
+    if [ "${php}" != "8.4" ]; then IPE_DONT_ENABLE=1 install-php-extensions blackfire; fi
+    IPE_DONT_ENABLE=1 install-php-extensions xdebug
     adduser -H -D -S -G wheel -u 501 machost
     adduser -H -D -S -G wheel -u 1000 linuxhost
 EOT
