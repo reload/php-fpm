@@ -1,4 +1,4 @@
-ARG php="8.2"
+ARG php="8.3"
 
 ## Base PHP images
 FROM php:8.1-fpm-alpine@sha256:e47e95fff703c5d51ef8b9d8c2bbc9a0fa21d7b2612338ed31a9395ba619758b AS php8.1
