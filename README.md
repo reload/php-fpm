@@ -28,7 +28,7 @@ services:
 
 We provide PHP 8.1, 8.2, 8.3 and 8.4 images.
 
-The images are based on the official [`php:8.x-fpm-alpine` Docker
+The images are based on the official [`php:8.x-fpm-bookworm` Docker
 images](https://hub.docker.com/_/php). We build new images when new
 upstream versions are released.
 

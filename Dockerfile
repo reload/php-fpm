@@ -1,10 +1,10 @@
 ARG php="8.3"
 
 ## Base PHP images
-FROM php:8.1-fpm-alpine@sha256:9e20c084a69820d87ef2ee96e1b7fe21ecf1ce49dd0abeafce6a6d25e14e350a AS php8.1
-FROM php:8.2-fpm-alpine@sha256:681c369da9d85525ff8ce081456fa79988e5a0e39fc286a1e59e179cbcb2711c AS php8.2
-FROM php:8.3-fpm-alpine@sha256:c0dd989d0eef2bc1dad44c891e1347122547d649090decaaa2d539399abd0c61 AS php8.3
-FROM php:8.4-fpm-alpine@sha256:5682435e64a0b2bd03337f2b9a92eacb8e095295377f3e2fa65eea15eae447b2 AS php8.4
+FROM php:8.1-fpm-bookworm@sha256:9711445cf92fbdeb42c4396ce4ad405ead54f38ff876d1093ec0abad98c75a16 AS php8.1
+FROM php:8.2-fpm-bookworm@sha256:c8109bd894c826bf3ed7c603c5bffc0c8d2f6d6506a759560241915a213cb911 AS php8.2
+FROM php:8.3-fpm-bookworm@sha256:803554ae9ad107b762524f28bbdc4d3d3ce41d02d720aaa2717e0b6fcace781d AS php8.3
+FROM php:8.4-fpm-bookworm@sha256:182b3466ea500120199794457bc7563dfc599f742f6833722dc7d3ca3f69a328 AS php8.4
 
 ## Helper images
 FROM blackfire/blackfire:2@sha256:bc34d45dcd7c7e2ae5ef9a282f7c0145e03d6bf7907522b8f56fa4a090798587 AS blackfire
@@ -26,18 +26,21 @@ COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
 RUN <<EOT
     set -eux
-    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 poppler-utils=~24 unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
+    apt-get -y update
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends git=1:2.* jq=1.* locales-all=2.* mariadb-client=1:10.* msmtp=1.* net-tools=2.* poppler-utils=22.* procps=2:4.* unzip=6.* graphicsmagick=1.* sudo=1.* tini=0.*
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
     install-php-extensions ${php_enable_extensions}
     if [ "${php}" != "8.4" ]; then IPE_DONT_ENABLE=1 install-php-extensions blackfire; fi
     IPE_DONT_ENABLE=1 install-php-extensions xdebug
-    adduser -H -D -S -G wheel -u 501 machost
-    adduser -H -D -S -G wheel -u 1000 linuxhost
+    adduser --uid=501 --gid=20 --disabled-password --gecos --quiet machost
+    adduser --uid=1000 --disabled-password --gecos --quiet linuxhost
 EOT
 
 COPY --from=blackfire /usr/local/bin/blackfire /usr/bin
 COPY --from=composer /usr/bin/composer /usr/bin
 
-SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 RUN curl https://endoflife.date/api/php/${php}.json| jq '{support,eol,lts}' > /etc/eol.json
 
 ARG workdir=/var/www
@@ -49,5 +52,5 @@ ENV PATH="${workdir}/vendor/bin:${PATH}"
 ENV PHP_DOCUMENT_ROOT="${workdir}/web"
 ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp --read-recipients --read-envelope-from"
 
-ENTRYPOINT [ "/sbin/tini", "--", "php-fpm-entrypoint" ]
+ENTRYPOINT [ "/bin/tini", "--", "php-fpm-entrypoint" ]
 CMD [ "php-fpm" ]
