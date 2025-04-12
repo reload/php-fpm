@@ -9,7 +9,7 @@ FROM php:8.4-fpm-alpine@sha256:a18334646a08844b20a34efe5541af644f41b40e2980a8d91
 ## Helper images
 FROM blackfire/blackfire:2@sha256:bc34d45dcd7c7e2ae5ef9a282f7c0145e03d6bf7907522b8f56fa4a090798587 AS blackfire
 FROM composer:2@sha256:26bbf85fccb36247181de6f4a2beddac47d4b352c0c19249a3b4fa2abf1e38ad AS composer
-FROM mlocati/php-extension-installer:2@sha256:3b99f27177c2a08c536c0dee07cdd87922c0e5f2b7dddc658101d6ad20bd8393 AS php-extension-installer
+FROM mlocati/php-extension-installer:2@sha256:278244b87320972edd400275235b2aab8587ba80c8cf352a46b371320f319ffd AS php-extension-installer
 
 ## Custom PHP image
 # hadolint ignore=DL3006
