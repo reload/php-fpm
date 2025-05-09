@@ -4,7 +4,7 @@ ARG php="8.3"
 FROM php:8.1-fpm-alpine@sha256:9e20c084a69820d87ef2ee96e1b7fe21ecf1ce49dd0abeafce6a6d25e14e350a AS php8.1
 FROM php:8.2-fpm-alpine@sha256:681c369da9d85525ff8ce081456fa79988e5a0e39fc286a1e59e179cbcb2711c AS php8.2
 FROM php:8.3-fpm-alpine@sha256:309bfcac0de6214394ace398458dd669054b372cc58f0f6ac3403c4db2b7549e AS php8.3
-FROM php:8.4-fpm-alpine@sha256:a18334646a08844b20a34efe5541af644f41b40e2980a8d91bb70dc5c4e9a971 AS php8.4
+FROM php:8.4-fpm-alpine@sha256:d445d374b3b72968124be3a3a3040a995192dc88d36373bf12d406ac5475098d AS php8.4
 
 ## Helper images
 FROM blackfire/blackfire:2@sha256:bc34d45dcd7c7e2ae5ef9a282f7c0145e03d6bf7907522b8f56fa4a090798587 AS blackfire
