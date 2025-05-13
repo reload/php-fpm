@@ -6,8 +6,6 @@ updates:
     schedule:
       interval: daily
       timezone: Europe/Copenhagen
-    reviewers:
-      - "reload/developers"
     ignore:
       - dependency-name: "php"
       - dependency-name: "library/php"
@@ -16,5 +14,3 @@ updates:
     schedule:
       interval: daily
       timezone: Europe/Copenhagen
-    reviewers:
-      - "reload/developers"
