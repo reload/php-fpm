@@ -26,7 +26,7 @@ COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
 RUN <<EOT
     set -eux
-    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 poppler-utils=~24 unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
+    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 poppler-utils=~25 unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
     install-php-extensions ${php_enable_extensions}
     IPE_DONT_ENABLE=1 install-php-extensions blackfire xdebug
     adduser -H -D -S -G wheel -u 501 machost
