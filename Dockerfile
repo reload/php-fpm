@@ -1,7 +1,7 @@
 ARG php="8.3"
 
 ## Base PHP images
-FROM php:8.1-fpm-alpine@sha256:5f74159426e0c279771eddd5bd28690b3c115ed58b08b531dd28a6e19b43d07f AS php8.1
+FROM php:8.1-fpm-alpine@sha256:9e20c084a69820d87ef2ee96e1b7fe21ecf1ce49dd0abeafce6a6d25e14e350a AS php8.1
 FROM php:8.2-fpm-alpine@sha256:3977c73c4953104322c4f752c1f8bbff2ca827edd89a3ec97299d2ca10304c12 AS php8.2
 FROM php:8.3-fpm-alpine@sha256:6ad8d400fff9de2b39b3558bd4bd40aafc16ad310d007cf7af8bd6c05419d0a3 AS php8.3
 FROM php:8.4-fpm-alpine@sha256:4a746bcf1b58a93605d0abab1ae3ce0fac7c7f20a83b3fa641f506bfa0269209 AS php8.4
@@ -26,7 +26,7 @@ COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
 RUN <<EOT
     set -eux
-    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 poppler-utils=~25 unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
+    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 "poppler-utils>=24" unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
     install-php-extensions ${php_enable_extensions}
     IPE_DONT_ENABLE=1 install-php-extensions blackfire xdebug
     adduser -H -D -S -G wheel -u 501 machost
