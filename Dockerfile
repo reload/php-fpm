@@ -1,9 +1,9 @@
 ARG php="8.3"
 
 ## Base PHP images
-FROM php:8.1-fpm-alpine@sha256:d3952dd493954f6fd3fe23bc756ea410076151578db33a02b98437c389a3d705 AS php8.1
-FROM php:8.2-fpm-alpine@sha256:9c66abb1d4e0246463c2eae2bc254044e2d74e80926bbf3d25b3fa4849588d81 AS php8.2
-FROM php:8.3-fpm-alpine@sha256:cf468a23683ebd2353d3f54510d4663b1bb469190ac431e393d45d2eef2290c4 AS php8.3
+FROM php:8.1-fpm-alpine@sha256:aaed547ad0dfa87481055fa01fba4b775a52c9fe7877f112228d5a604b0dcc8e AS php8.1
+FROM php:8.2-fpm-alpine@sha256:8632843ab1d22c0db66cfdba56e116659c7e9582e0772dfd9d85652abd43a321 AS php8.2
+FROM php:8.3-fpm-alpine@sha256:6acd72e5ae083d48706428411247507c8036756944259f131d0af4753981236e AS php8.3
 FROM php:8.4-fpm-alpine@sha256:2b5cc69dc1f8c903e4a82db124bc2593e5bb6dc6a9377d63fb89737cb5773341 AS php8.4
 
 ## Helper images
