@@ -8,7 +8,7 @@ permissions:
 jobs:
   php-versions:
     name: Lookup PHP versions
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ env.php_versions }}
     steps:
@@ -17,7 +17,7 @@ jobs:
         run: echo "php_versions=$(make _versions)" >> "$GITHUB_ENV"
   build:
     name: PHP
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: php-versions
     strategy:
       fail-fast: false
