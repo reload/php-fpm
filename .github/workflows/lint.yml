@@ -9,14 +9,14 @@ permissions:
 jobs:
   markdown:
     name: markdown
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Run markdownlint
         uses: DavidAnson/markdownlint-cli2-action@v20
   dockerfile:
     name: dockerfile
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Run hadolint
@@ -25,21 +25,21 @@ jobs:
           trusted-registries: docker.io,ghcr.io
   shell-scripts:
     name: shell scripts
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Run ShellCheck
         uses: luizm/action-sh-checker@master
   yaml:
     name: yaml
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Run Yamllint
         uses: frenck/action-yamllint@v1.5.0
   php-ext-doc:
     name: php extension documentation
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Checking if enabled PHP extensions are documented in README.md
