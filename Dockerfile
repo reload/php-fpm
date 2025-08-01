@@ -43,7 +43,6 @@ ARG workdir=/var/www
 WORKDIR "${workdir}"
 
 ENV COMPOSER_CACHE_DIR="/tmp/composer-cache"
-ENV GIT_CEILING_DIRECTORIES="${workdir}"
 ENV PATH="${workdir}/vendor/bin:${PATH}"
 ENV PHP_DOCUMENT_ROOT="${workdir}/web"
 ENV PHP_SENDMAIL_PATH="/usr/bin/msmtp --read-recipients --read-envelope-from"
