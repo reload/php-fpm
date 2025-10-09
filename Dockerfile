@@ -1,10 +1,10 @@
 ARG php="8.3"
 
 ## Base PHP images
-FROM php:8.1-fpm-alpine@sha256:b8ff20e0200312458e7304e54500b148810513263ae7a20a370f0eac30de3580 AS php8.1
-FROM php:8.2-fpm-alpine@sha256:b7355fb38ef93fd0ef6ccbecee006a25f9bb7fbb65a9f6b7a4721582b75c073a AS php8.2
-FROM php:8.3-fpm-alpine@sha256:5ce6206258643f0cddd25ffaca932932603668cc7ecbdc4352ef8e515a48f68f AS php8.3
-FROM php:8.4-fpm-alpine@sha256:c4e122105b22e71ca28d5db60223a331d77473f52ec6a1d7d69c6d612ef9b2c2 AS php8.4
+FROM php:8.1-fpm-alpine@sha256:7365744e81a154b196d92bd6c473ba9d87df64e29a8f1b43c869e57007e58687 AS php8.1
+FROM php:8.2-fpm-alpine@sha256:d94ae5bf39dddd20d93d4af5598295d43d7854908d57d89b8a03e2b30104c2ae AS php8.2
+FROM php:8.3-fpm-alpine@sha256:03844765c10c33de1b4574d3129fcf62c07a959710e50a317646cb2607f6623f AS php8.3
+FROM php:8.4-fpm-alpine@sha256:5fa6e07f2377507b80e06b149c7bd4414ceda77fe4a2fc151e7bd950fd16468a AS php8.4
 
 ## Helper images
 FROM blackfire/blackfire:2@sha256:e7b70c275461a5f3f2bf223612f681e9ebb823490dfd34bda0987645ca6c41e5 AS blackfire
