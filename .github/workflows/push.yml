@@ -50,7 +50,7 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:${{ matrix.php }}
           load: ${{ (matrix.platform == 'linux/amd64') }}
-      - uses: e1himself/goss-installation-action@v1.2.1
+      - uses: e1himself/goss-installation-action@v1.3.0
         if: ${{ (matrix.platform == 'linux/amd64') }}
       - name: Test PHP ${{ matrix.php }}
         if: ${{ (matrix.platform == 'linux/amd64') }}
