@@ -14,7 +14,7 @@ jobs:
     name: Update PHP Docker image SHAs
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Authenticate with Docker Hub
         uses: docker/login-action@v3
         with:
