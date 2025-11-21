@@ -79,11 +79,9 @@ The images come with the following extensions installed and enabled:
 - gd
 - gettext
 - iconv
-- imagick
 - intl
 - json
 - mbstring
-- memcache
 - memcached
 - mysqli
 - mysqlnd
@@ -110,8 +108,13 @@ The images come with the following extensions installed and enabled:
 - xsl
 - zip
 
-In addition, the `blackfire` and `xdebug` extensions are installed but
-not enabled in the images.
+The extensions `imagick` and `memcache` are also installed and enabled
+in all images. On PHP 8.5 they are based on unreleased versions from
+their master and main branches respectively.
+
+In addition, the `blackfire` (except on PHP 8.5) and `xdebug` (from
+master branch on PHP 8.5) extensions are installed but not enabled in
+the images.
 
 The
 [php-extension-installer](https://github.com/mlocati/docker-php-extension-installer)
