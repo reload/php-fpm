@@ -5,6 +5,7 @@ FROM php:8.1-fpm-alpine@sha256:16e30a08fa5ffca9238bd6b5e02abd6a2931f3e449e8b7199
 FROM php:8.2-fpm-alpine@sha256:f5cbb745950ec7ae49117fc1e326fddcd07ec2d0a47e230918e2eaa65f1b80b0 AS php8.2
 FROM php:8.3-fpm-alpine@sha256:fc15b9ed9c2ceb6793c222ab4ec051afebe5b171b161bf1b17ebac10697fd9d4 AS php8.3
 FROM php:8.4-fpm-alpine@sha256:d5c6567f31e35173bbddd39df0f5c1ced81477c7858b7fad975735dd350a63f6 AS php8.4
+FROM php:8.5-fpm-alpine@sha256:72445181929fc7174b3ce9fc22a3963a7dd553b8a630fdcfa8de6ee215c3e3f3 AS php8.5
 
 ## Helper images
 FROM blackfire/blackfire:2@sha256:931af7fdf6a3d651c05cf86bb9edc919194d726082b6ed84502d0277a300ba67 AS blackfire
@@ -16,7 +17,7 @@ FROM mlocati/php-extension-installer:2@sha256:4ac3eefdb28ddbc07611c31dfe5353eb7f
 FROM php${php}
 
 ARG php=${php}
-ARG php_enable_extensions="apcu bcmath calendar ctype curl dom exif fileinfo ftp gd gettext iconv imagick intl json mbstring memcache memcached mysqli mysqlnd opcache pdo pdo_mysql pdo_sqlite phar posix readline redis shmop simplexml soap sockets sqlite3 sysvmsg sysvsem sysvshm tokenizer xml xmlreader xmlwriter xsl zip"
+ARG php_enable_extensions="apcu bcmath calendar ctype curl dom exif fileinfo ftp gd gettext iconv intl json mbstring memcached mysqli mysqlnd opcache pdo pdo_mysql pdo_sqlite phar posix readline redis shmop simplexml soap sockets sqlite3 sysvmsg sysvsem sysvshm tokenizer xml xmlreader xmlwriter xsl zip"
 
 HEALTHCHECK --interval=10s --start-period=90s CMD netstat -ltn | grep -c ":9000"
 
@@ -28,7 +29,10 @@ RUN <<EOT
     set -eux
     apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 "poppler-utils>=24" unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
     install-php-extensions ${php_enable_extensions}
-    IPE_DONT_ENABLE=1 install-php-extensions blackfire xdebug
+    if [ "${php}" = "8.5" ]; then install-php-extensions imagick/imagick@master websupport-sk/pecl-memcache@main; fi
+    if [ "${php}" != "8.5" ]; then install-php-extensions imagick memcache; fi
+    if [ "${php}" = "8.5" ]; then IPE_DONT_ENABLE=1 install-php-extensions xdebug/xdebug@master; fi
+    if [ "${php}" != "8.5" ]; then IPE_DONT_ENABLE=1 install-php-extensions blackfire xdebug; fi
     adduser -H -D -S -G wheel -u 501 machost
     adduser -H -D -S -G wheel -u 1000 linuxhost
 EOT
