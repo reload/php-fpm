@@ -17,7 +17,7 @@ FROM mlocati/php-extension-installer:2@sha256:4ac3eefdb28ddbc07611c31dfe5353eb7f
 FROM php${php}
 
 ARG php=${php}
-ARG php_enable_extensions="apcu bcmath calendar ctype curl dom exif fileinfo ftp gd gettext iconv intl json mbstring memcached mysqli mysqlnd opcache pdo pdo_mysql pdo_sqlite phar posix readline redis shmop simplexml soap sockets sqlite3 sysvmsg sysvsem sysvshm tokenizer xml xmlreader xmlwriter xsl zip"
+ARG php_enable_extensions="apcu bcmath calendar ctype curl dom exif fileinfo ftp gd gettext iconv intl imagick json mbstring memcached mysqli mysqlnd opcache pdo pdo_mysql pdo_sqlite phar posix readline redis shmop simplexml soap sockets sqlite3 sysvmsg sysvsem sysvshm tokenizer xml xmlreader xmlwriter xsl zip"
 
 HEALTHCHECK --interval=10s --start-period=90s CMD netstat -ltn | grep -c ":9000"
 
@@ -29,8 +29,8 @@ RUN <<EOT
     set -eux
     apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 "poppler-utils>=24" unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
     install-php-extensions ${php_enable_extensions}
-    if [ "${php}" = "8.5" ]; then install-php-extensions imagick/imagick@master websupport-sk/pecl-memcache@main; fi
-    if [ "${php}" != "8.5" ]; then install-php-extensions imagick memcache; fi
+    if [ "${php}" = "8.5" ]; then install-php-extensions websupport-sk/pecl-memcache@main; fi
+    if [ "${php}" != "8.5" ]; then install-php-extensions memcache; fi
     if [ "${php}" = "8.5" ]; then IPE_DONT_ENABLE=1 install-php-extensions xdebug/xdebug@master; fi
     if [ "${php}" != "8.5" ]; then IPE_DONT_ENABLE=1 install-php-extensions blackfire xdebug; fi
     adduser -H -D -S -G wheel -u 501 machost
