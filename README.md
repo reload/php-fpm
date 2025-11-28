@@ -80,6 +80,7 @@ The images come with the following extensions installed and enabled:
 - gettext
 - iconv
 - intl
+- imagick
 - json
 - mbstring
 - memcached
@@ -108,9 +109,9 @@ The images come with the following extensions installed and enabled:
 - xsl
 - zip
 
-The extensions `imagick` and `memcache` are also installed and enabled
-in all images. On PHP 8.5 they are based on unreleased versions from
-their master and main branches respectively.
+The `memcache` extension is also installed and enabled in all
+images. On PHP 8.5 it is based on an unreleased version from their
+main branch.
 
 In addition, the `blackfire` (except on PHP 8.5) and `xdebug` (from
 master branch on PHP 8.5) extensions are installed but not enabled in
