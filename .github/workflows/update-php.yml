@@ -23,7 +23,7 @@ jobs:
       - name: "Run update script"
         run: ./bin/update-php-images-sha.sh
       - name: "Create pull request"
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           add-paths: Dockerfile
           commit-message: Update PHP Docker image SHAs
