@@ -3,7 +3,7 @@ VERSIONS=$(shell grep -Po 'FROM .*php:.*AS \Kphp.*' Dockerfile)
 TESTS=$(subst php,test,$(VERSIONS))
 
 .DEFAULT_GOAL := current
-.PHONY: all check-doc clean current help _platforms test _versions $(VERSIONS) $(TESTS)
+.PHONY: all check-doc clean current help _platforms test update-php-images-sha _versions $(VERSIONS) $(TESTS)
 
 all: PLATFORMS=linux/amd64,linux/arm64
 all: $(VERSIONS) ## Build Docker images for all PHP versions
@@ -26,6 +26,9 @@ test: $(TESTS) ## Run tests for ghcr.io/reload/php-fpm version
 
 check-doc: README.md Dockerfile ## Check documentation
 	./bin/check-doc.sh
+
+update-php-images-sha: ## Update PHP images SHA
+	./bin/update-php-images-sha.sh
 
 $(TESTS): $(subst test,php,$@)
 	dgoss run -e GOSS_VARS_INLINE='php_version: "$(subst test,,$@)"' ghcr.io/reload/php-fpm:$(subst test,,$@)
