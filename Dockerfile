@@ -31,8 +31,8 @@ RUN <<EOT
     install-php-extensions ${php_enable_extensions}
     if [ "${php}" = "8.5" ]; then install-php-extensions websupport-sk/pecl-memcache@main; fi
     if [ "${php}" != "8.5" ]; then install-php-extensions memcache; fi
-    if [ "${php}" = "8.5" ]; then IPE_DONT_ENABLE=1 install-php-extensions xdebug/xdebug@master; fi
-    if [ "${php}" != "8.5" ]; then IPE_DONT_ENABLE=1 install-php-extensions blackfire xdebug; fi
+    IPE_DONT_ENABLE=1 install-php-extensions xdebug
+    if [ "${php}" != "8.5" ]; then IPE_DONT_ENABLE=1 install-php-extensions blackfire; fi
     adduser -H -D -S -G wheel -u 501 machost
     adduser -H -D -S -G wheel -u 1000 linuxhost
 EOT

@@ -113,9 +113,8 @@ The `memcache` extension is also installed and enabled in all
 images. On PHP 8.5 it is based on an unreleased version from their
 main branch.
 
-In addition, the `blackfire` (except on PHP 8.5) and `xdebug` (from
-master branch on PHP 8.5) extensions are installed but not enabled in
-the images.
+In addition, the `blackfire` (except on PHP 8.5) and `xdebug`
+extensions are installed but not enabled in the images.
 
 The
 [php-extension-installer](https://github.com/mlocati/docker-php-extension-installer)
