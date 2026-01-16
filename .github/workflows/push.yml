@@ -15,15 +15,14 @@ jobs:
       - uses: actions/checkout@v6
       - name: Lookup PHP versions
         run: echo "php_versions=$(make _versions)" >> "$GITHUB_ENV"
-  build:
-    name: PHP
+  build-amd64:
+    name: PHP / amd64
     runs-on: ubuntu-24.04
     needs: php-versions
     strategy:
       fail-fast: false
       matrix:
         php: ${{ fromJSON(needs.php-versions.outputs.matrix) }}
-        platform: [linux/arm64, linux/amd64]
     steps:
       - uses: actions/checkout@v6
       - name: Set up QEMU
@@ -31,13 +30,13 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v3
-      - name: Build PHP ${{ matrix.php }} (${{ matrix.platform }})
+      - name: Build PHP ${{ matrix.php }}
         uses: docker/build-push-action@v6
         with:
           file: "Dockerfile"
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64
           build-args: "php=${{ matrix.php }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -49,11 +48,48 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
           tags: |
             ghcr.io/${{ github.repository }}:${{ matrix.php }}
-          load: ${{ (matrix.platform == 'linux/amd64') }}
+          load: true
       - uses: e1himself/goss-installation-action@v1.3.0
-        if: ${{ (matrix.platform == 'linux/amd64') }}
       - name: Test PHP ${{ matrix.php }}
-        if: ${{ (matrix.platform == 'linux/amd64') }}
+        run: |
+          # Sleep a bit to ensure that PHP-FPM has time to start up.
+          GOSS_SLEEP=15 dgoss run -e GOSS_VARS_INLINE='php_version: "${{ matrix.php }}"' ghcr.io/${{ github.repository }}:${{ matrix.php }}
+  build-arm64:
+    name: PHP / arm64
+    runs-on: ubuntu-24.04-arm
+    needs: php-versions
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ${{ fromJSON(needs.php-versions.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build PHP ${{ matrix.php }}
+        uses: docker/build-push-action@v6
+        with:
+          file: "Dockerfile"
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          platforms: linux/arm64
+          build-args: "php=${{ matrix.php }}"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          labels: |
+            org.opencontainers.image.title=PHP ${{ matrix.php }}
+            org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ matrix.php }}-${{ github.sha }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ matrix.php }}
+          load: true
+      - uses: e1himself/goss-installation-action@v1.3.0
+      - name: Test PHP ${{ matrix.php }}
         run: |
           # Sleep a bit to ensure that PHP-FPM has time to start up.
           GOSS_SLEEP=15 dgoss run -e GOSS_VARS_INLINE='php_version: "${{ matrix.php }}"' ghcr.io/${{ github.repository }}:${{ matrix.php }}
