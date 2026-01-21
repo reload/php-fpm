@@ -17,13 +17,18 @@ jobs:
         run: echo "php_versions=$(make _versions)" >> "$GITHUB_ENV"
   build:
     name: PHP
-    runs-on: ubuntu-24.04
     needs: php-versions
     strategy:
       fail-fast: false
       matrix:
         php: ${{ fromJSON(needs.php-versions.outputs.matrix) }}
         platform: [linux/arm64, linux/amd64]
+        include:
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
+          - platform: linux/amd64
+            runner: ubuntu-24.04
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v6
       - name: Set up QEMU
@@ -49,11 +54,9 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
           tags: |
             ghcr.io/${{ github.repository }}:${{ matrix.php }}
-          load: ${{ (matrix.platform == 'linux/amd64') }}
+          load: true
       - uses: e1himself/goss-installation-action@v1.3.0
-        if: ${{ (matrix.platform == 'linux/amd64') }}
       - name: Test PHP ${{ matrix.php }}
-        if: ${{ (matrix.platform == 'linux/amd64') }}
         run: |
           # Sleep a bit to ensure that PHP-FPM has time to start up.
-          GOSS_SLEEP=15 dgoss run -e GOSS_VARS_INLINE='php_version: "${{ matrix.php }}"' ghcr.io/${{ github.repository }}:${{ matrix.php }}
+          GOSS_SLEEP=15 dgoss run --pull=never -e GOSS_VARS_INLINE='php_version: "${{ matrix.php }}"' ghcr.io/${{ github.repository }}:${{ matrix.php }}
