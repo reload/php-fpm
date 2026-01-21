@@ -59,4 +59,4 @@ jobs:
       - name: Test PHP ${{ matrix.php }}
         run: |
           # Sleep a bit to ensure that PHP-FPM has time to start up.
-          GOSS_SLEEP=15 dgoss run -e GOSS_VARS_INLINE='php_version: "${{ matrix.php }}"' ghcr.io/${{ github.repository }}:${{ matrix.php }}
+          GOSS_SLEEP=15 dgoss run --pull=never -e GOSS_VARS_INLINE='php_version: "${{ matrix.php }}"' ghcr.io/${{ github.repository }}:${{ matrix.php }}
