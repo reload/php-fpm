@@ -5,7 +5,7 @@ FROM php:8.1-fpm-alpine@sha256:a84e0422af72d9a60a8f73756b622bcd37c5a8f85609e43e0
 FROM php:8.2-fpm-alpine@sha256:89ca299cb45f8a63a28fd4e564a9d6b916ae4b1fc5752b4e0b89b4ed688994a1 AS php8.2
 FROM php:8.3-fpm-alpine@sha256:1b440e9804209491713035c4859d434f55e5cf8b0fb8c88a58f2f73d8e18b420 AS php8.3
 FROM php:8.4-fpm-alpine@sha256:2e8d5b74437b02cbc3c632903d20a10fdcc956ba56d25bff951cc2b610767c9a AS php8.4
-FROM php:8.5-fpm-alpine@sha256:82dd8cfd2aa93a98b0357e4c810f894c4ca265b5034aef3be654faae5f579487 AS php8.5
+FROM php:8.5-fpm-alpine@sha256:5122b861ce2165dd27da185d50e616cca17dc21407234b8060440fc36700e823 AS php8.5
 
 ## Helper images
 FROM blackfire/blackfire:2026.6.0@sha256:5dc4c0816c2d4640526b8ebd87c235004b50da7a5f793d057e109b943d6b8858 AS blackfire
