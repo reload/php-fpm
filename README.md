@@ -70,6 +70,7 @@ The images come with the following extensions installed and enabled:
 
 - apcu
 - bcmath
+- brotli
 - calendar
 - ctype
 - curl
