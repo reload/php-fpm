@@ -19,7 +19,7 @@ FROM php${php}
 ARG php=${php}
 ARG php_enable_extensions="apcu bcmath brotli calendar ctype curl dom exif fileinfo ftp gd gettext iconv intl imagick json mbstring memcached mysqli mysqlnd opcache pdo pdo_mysql pdo_sqlite phar posix readline redis shmop simplexml soap sockets sqlite3 sysvmsg sysvsem sysvshm tokenizer xml xmlreader xmlwriter xsl zip"
 
-HEALTHCHECK --interval=10s --start-period=90s CMD netstat -ltn | grep -c ":9000"
+HEALTHCHECK --interval=10s --start-period=90s CMD [ "sh", "-c", "netstat -ltn | grep -c :9000" ]
 
 COPY context/ /
 
@@ -39,7 +39,7 @@ EOT
 COPY --from=blackfire /usr/local/bin/blackfire /usr/bin
 COPY --from=composer /usr/bin/composer /usr/bin
 
-SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+SHELL [ "/bin/ash", "-eo", "pipefail", "-c" ]
 RUN curl https://endoflife.date/api/php/${php}.json| jq '{support,eol,lts}' > /etc/eol.json
 
 ARG workdir=/var/www
