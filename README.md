@@ -89,8 +89,10 @@ The images come with the following extensions installed and enabled:
 - mysqli
 - mysqlnd
 - opcache
+- pcntl
 - pdo
 - pdo_mysql
+- pdo_pgsql
 - pdo_sqlite
 - phar
 - posix
