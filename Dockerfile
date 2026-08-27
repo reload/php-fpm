@@ -28,7 +28,8 @@ COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
 RUN <<EOT
     set -eux
-    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 "poppler-utils>=24" unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
+    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 oniguruma-dev=~6 patch=~2 "poppler-utils>=24" unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
+    docker-php-ext-install mbstring # Bootstrap mbstring extention for use by `install-php-extensions`
     install-php-extensions ${php_enable_extensions}
     if [ "${php}" = "8.5" ]; then install-php-extensions websupport-sk/pecl-memcache@main; fi
     if [ "${php}" != "8.5" ]; then install-php-extensions memcache; fi
