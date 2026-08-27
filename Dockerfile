@@ -6,6 +6,7 @@ FROM php:8.2-fpm-alpine@sha256:b57d486fdfb1bbee188d834714bba623d954c3c9dc5d4468f
 FROM php:8.3-fpm-alpine@sha256:bf90236449d333cef008b1f01c72a3d4f11a6470a74629665e4c6b6158f03fc8 AS php8.3
 FROM php:8.4-fpm-alpine@sha256:5992f8b7433fe7fa96dfbf67746c86d6c41bc91e686eac38fe531c72a02e40e4 AS php8.4
 FROM php:8.5-fpm-alpine@sha256:9dc81f4086ea5402227a6bcc489b04b4baba12394624d9621faa92ed812fb8ee AS php8.5
+FROM php:8.6-rc-fpm-alpine@sha256:847336de3366f54e4a617b5138d513369e6759dfccf1cb3910ce3ffbe7dba9e8 AS php8.6
 
 ## Helper images
 FROM blackfire/blackfire:2026.8.0@sha256:8e32a830be1526fc42cb7d565ac1c631eecc32604d77556b8b94e02f20100727 AS blackfire
@@ -27,7 +28,8 @@ COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
 RUN <<EOT
     set -eux
-    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 patch=~2 "poppler-utils>=24" unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
+    apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 oniguruma-dev=~6 patch=~2 "poppler-utils>=24" unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
+    docker-php-ext-install mbstring # Bootstrap mbstring extention for use by `install-php-extensions`
     install-php-extensions ${php_enable_extensions}
     if [ "${php}" = "8.5" ]; then install-php-extensions websupport-sk/pecl-memcache@main; fi
     if [ "${php}" != "8.5" ]; then install-php-extensions memcache; fi
