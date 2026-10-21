@@ -13,7 +13,7 @@ FPM like this:
 ```yaml
 services:
   php:
-    image: 'ghcr.io/reload/php-fpm:8.3'
+    image: 'ghcr.io/reload/php-fpm:8.5'
     ports:
       - '9000'
     user: '${UID:-501}:${GID:-20}'
@@ -182,7 +182,7 @@ feature `update-ca-certificates`.
 ```yaml
 services:
   php:
-    image: 'ghcr.io/reload/php-fpm:8.3'
+    image: 'ghcr.io/reload/php-fpm:8.5'
     volumes:
       - '.:/var/www'
       - './my-ca.pem:/usr/local/share/ca-certificates/my-ca.pem:ro'
@@ -221,7 +221,7 @@ the original Blackfire image.
 
 ```yaml
   php:
-    image: 'ghcr.io/reload/php-fpm:8.3'
+    image: 'ghcr.io/reload/php-fpm:8.5'
     environment:
       BLACKFIRE_CLIENT_ID: <your client key>
       BLACKFIRE_CLIENT_TOKEN: <your client token>
@@ -246,7 +246,7 @@ For simple development setups, we recommend combining it with
 
 ```yaml
   php:
-    image: 'ghcr.io/reload/php-fpm:8.3'
+    image: 'ghcr.io/reload/php-fpm:8.5'
     environment:
       SMTPSERVER: 'mail'
   mail:
