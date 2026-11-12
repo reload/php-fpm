@@ -36,9 +36,19 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v4
-      - name: Set image creation timestamp
-        id: timestamp
-        run: echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: type=raw,value=${{ matrix.php }}
+          flavor: latest=false
+          labels: |
+            org.opencontainers.image.title=PHP ${{ matrix.php }}
+            org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ matrix.php }}-${{ github.sha }}
+            org.opencontainers.image.revision=${{ github.sha }}
       - name: Build PHP ${{ matrix.php }} (${{ matrix.platform }})
         uses: docker/build-push-action@v7
         with:
@@ -49,17 +59,9 @@ jobs:
           build-args: "php=${{ matrix.php }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          labels: |
-            org.opencontainers.image.created=${{ steps.timestamp.outputs.created }}
-            org.opencontainers.image.title=PHP ${{ matrix.php }}
-            org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.version=${{ matrix.php }}-${{ github.sha }}
-            org.opencontainers.image.revision=${{ github.sha }}
-          annotations: |
-            manifest:org.opencontainers.image.created=${{ steps.timestamp.outputs.created }}
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ matrix.php }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          tags: ${{ steps.meta.outputs.tags }}
           load: true
       - uses: e1himself/goss-installation-action@v1.3.0
       - name: Test PHP ${{ matrix.php }}
