@@ -44,6 +44,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
+      - name: Set image creation timestamp
+        id: timestamp
+        run: echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
       - name: Build PHP ${{ matrix.php }}
         uses: docker/build-push-action@v7
         with:
@@ -56,11 +59,14 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           labels: |
+            org.opencontainers.image.created=${{ steps.timestamp.outputs.created }}
             org.opencontainers.image.title=PHP ${{ matrix.php }}
             org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.version=${{ matrix.php }}-${{ github.sha }}
             org.opencontainers.image.revision=${{ github.sha }}
+          annotations: |
+            index,manifest:org.opencontainers.image.created=${{ steps.timestamp.outputs.created }}
           tags: |
             ghcr.io/${{ github.repository }}:${{ matrix.php }}
   cleanup:
