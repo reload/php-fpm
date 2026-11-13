@@ -44,6 +44,21 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        env:
+          DOCKER_METADATA_ANNOTATIONS_LEVELS: index,manifest
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: type=raw,value=${{ matrix.php }}
+          flavor: latest=false
+          labels: |
+            org.opencontainers.image.title=PHP ${{ matrix.php }}
+            org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ matrix.php }}-${{ github.sha }}
+            org.opencontainers.image.revision=${{ github.sha }}
       - name: Build PHP ${{ matrix.php }}
         uses: docker/build-push-action@v7
         with:
@@ -55,14 +70,9 @@ jobs:
           build-args: "php=${{ matrix.php }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          labels: |
-            org.opencontainers.image.title=PHP ${{ matrix.php }}
-            org.opencontainers.image.description=Docker image for PHP ${{ matrix.php }} FPM
-            org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.version=${{ matrix.php }}-${{ github.sha }}
-            org.opencontainers.image.revision=${{ github.sha }}
-          tags: |
-            ghcr.io/${{ github.repository }}:${{ matrix.php }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          tags: ${{ steps.meta.outputs.tags }}
   cleanup:
     name: Cleanup
     runs-on: ubuntu-24.04
