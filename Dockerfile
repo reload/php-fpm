@@ -25,6 +25,10 @@ COPY context/ /
 
 COPY --from=php-extension-installer /usr/bin/install-php-extensions /usr/bin
 
+SHELL [ "/bin/ash", "-eo", "pipefail", "-c" ]
+
+# The extension list must split into words.
+# hadolint ignore=SC2086
 RUN <<EOT
     set -eux
     apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 oniguruma-dev=~6 patch=~2 "poppler-utils>=24" unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
@@ -42,8 +46,8 @@ RUN <<EOT
         # The apcu package.xml version (5.1.29-dev) makes `pecl` fail, and
         # memcached has a new configure question that `install-php-extensions`
         # does not expect. Build both with `docker-php-ext-install` instead.
-        apk add --no-cache libmemcached-libs
-        apk add --no-cache --virtual .build-deps libmemcached-dev zlib-dev
+        apk add --no-cache libmemcached-libs=~1
+        apk add --no-cache --virtual .build-deps libmemcached-dev=~1 zlib-dev=~1
         mkdir -p /usr/src/apcu /usr/src/memcached
         curl -fsSL https://github.com/krakjoe/apcu/archive/fb2c942552a3f5dab7f4dea4afb5cf0831222c57.tar.gz | tar -xz --strip-components=1 -C /usr/src/apcu
         curl -fsSL https://github.com/php-memcached-dev/php-memcached/archive/0b52d3657140750fa0eddd20cdbfc6edc8fbdadd.tar.gz | tar -xz --strip-components=1 -C /usr/src/memcached
@@ -65,7 +69,6 @@ EOT
 COPY --from=blackfire /usr/local/bin/blackfire /usr/bin
 COPY --from=composer /usr/bin/composer /usr/bin
 
-SHELL [ "/bin/ash", "-eo", "pipefail", "-c" ]
 # endoflife.date answers 404 for a PHP version that is not released yet.
 # Then the support and end-of-life dates are null and no warnings show.
 RUN <<EOT
