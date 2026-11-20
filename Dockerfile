@@ -29,10 +29,35 @@ RUN <<EOT
     set -eux
     apk add --no-cache bash=~5 git=~2 jq=~1 mariadb-client=~11 msmtp=~1 oniguruma-dev=~6 patch=~2 "poppler-utils>=24" unzip=~6 graphicsmagick=~1 sudo=~1 tini=~0
     docker-php-ext-install mbstring # Bootstrap mbstring extention for use by `install-php-extensions`
-    install-php-extensions ${php_enable_extensions}
-    if [ "${php}" = "8.5" ]; then install-php-extensions websupport-sk/pecl-memcache@main; fi
-    if [ "${php}" != "8.5" ]; then install-php-extensions memcache; fi
-    IPE_DONT_ENABLE=1 install-php-extensions blackfire xdebug
+    if [ "${php}" = "8.6" ]; then
+        # The PECL releases of apcu, imagick, memcache, memcached, redis
+        # and xdebug do not build against PHP 8.6 yet. Build apcu,
+        # imagick, memcached and xdebug from upstream commits that
+        # support PHP 8.6. Leave out memcache and redis until upstream
+        # merges their PHP 8.6 fixes.
+        for extension in apcu imagick memcached redis; do
+            php_enable_extensions=$(echo " ${php_enable_extensions} " | sed "s/ ${extension} / /")
+        done
+        install-php-extensions ${php_enable_extensions} Imagick/imagick@55ed2e9fda264395636a2e27e51f31673f5566ab
+        # The apcu package.xml version (5.1.29-dev) makes `pecl` fail, and
+        # memcached has a new configure question that `install-php-extensions`
+        # does not expect. Build both with `docker-php-ext-install` instead.
+        apk add --no-cache libmemcached-libs
+        apk add --no-cache --virtual .build-deps libmemcached-dev zlib-dev
+        mkdir -p /usr/src/apcu /usr/src/memcached
+        curl -fsSL https://github.com/krakjoe/apcu/archive/fb2c942552a3f5dab7f4dea4afb5cf0831222c57.tar.gz | tar -xz --strip-components=1 -C /usr/src/apcu
+        curl -fsSL https://github.com/php-memcached-dev/php-memcached/archive/0b52d3657140750fa0eddd20cdbfc6edc8fbdadd.tar.gz | tar -xz --strip-components=1 -C /usr/src/memcached
+        docker-php-ext-configure /usr/src/memcached --disable-memcached-igbinary --disable-memcached-msgpack --enable-memcached-json --disable-memcached-protocol --enable-memcached-sasl --enable-memcached-session
+        docker-php-ext-install /usr/src/apcu /usr/src/memcached
+        apk del .build-deps
+        rm -rf /usr/src/apcu /usr/src/memcached
+        IPE_DONT_ENABLE=1 install-php-extensions blackfire xdebug/xdebug@5e19866c1766e38c527f9f94faa170370dc4209f
+    else
+        install-php-extensions ${php_enable_extensions}
+        if [ "${php}" = "8.5" ]; then install-php-extensions websupport-sk/pecl-memcache@main; fi
+        if [ "${php}" != "8.5" ]; then install-php-extensions memcache; fi
+        IPE_DONT_ENABLE=1 install-php-extensions blackfire xdebug
+    fi
     adduser -H -D -S -G wheel -u 501 machost
     adduser -H -D -S -G wheel -u 1000 linuxhost
 EOT
@@ -41,7 +66,14 @@ COPY --from=blackfire /usr/local/bin/blackfire /usr/bin
 COPY --from=composer /usr/bin/composer /usr/bin
 
 SHELL [ "/bin/ash", "-eo", "pipefail", "-c" ]
-RUN curl https://endoflife.date/api/php/${php}.json| jq '{support,eol,lts}' > /etc/eol.json
+# endoflife.date answers 404 for a PHP version that is not released yet.
+# Then the support and end-of-life dates are null and no warnings show.
+RUN <<EOT
+    status=$(curl -sS -o /tmp/eol.json -w '%{http_code}' "https://endoflife.date/api/php/${php}.json")
+    if [ "${status}" = "404" ]; then echo '{}' > /tmp/eol.json; elif [ "${status}" != "200" ]; then exit 1; fi
+    jq '{support,eol,lts}' /tmp/eol.json > /etc/eol.json
+    rm /tmp/eol.json
+EOT
 
 ARG workdir=/var/www
 WORKDIR "${workdir}"
