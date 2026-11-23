@@ -7,7 +7,7 @@ FROM php:8.4-fpm-alpine@sha256:c0e41e0c856bf97b2e749f40a804031ce938d0d496c4c7d91
 FROM php:8.5-fpm-alpine@sha256:51414d5291758fe27f58a64c7e8a078465d32cc7dcef7bda803f5b36019802e0 AS php8.5
 
 ## Helper images
-FROM blackfire/blackfire:2026.11.0@sha256:d3dd7b34cb2427bee6c91d7eade7350fc91eb03556cde4fd62d632c0a12344ed AS blackfire
+FROM blackfire/blackfire:2026.11.1@sha256:b4e4ec50c6d5326752e77cb2681de63e1f79a86da36cd85838aee8d329ff9090 AS blackfire
 FROM composer:2@sha256:f746ca10fd351429e13a6fc9599ccd41d4fc413e036ae8b0dad9e2041adcffcd AS composer
 FROM mlocati/php-extension-installer:2@sha256:4fd45396c16685266d32bf147a24ecd5e81029d3820295895bf4a90131190ac9 AS php-extension-installer
 
